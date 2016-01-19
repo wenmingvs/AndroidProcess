@@ -27,10 +27,10 @@ getRunningTasks这个方法在5.0 Lollipop之后就不在对第三方App可用了，因为这样会泄漏
 
 **测试**
 下面是在小米的机子上打印的结果，Android的版本是Android4.4.4的，我们是可以拿到全部的正在运行的应用的信息的。其中包名为com.whee.wheetalklollipop的就是我们需要判断是否处于前台的App，如今他位于第一个，说明是处于前台的
-![enter image description here](https://raw.githubusercontent.com/wenmingvs/NotificationUtil/develop_notify/%E5%B0%8F%E7%B1%B3%E6%89%93%E5%8D%B0.PNG)
+![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/%E5%B0%8F%E7%B1%B3%E6%89%93%E5%8D%B0.PNG)
 
 下面是Android5.0上打印的结果，我们虽然打开了很多诸如新浪微博，网易新闻，QQ子类的App，可是打印出来后却完全看不到了，只有自身的App的信息和一些系统进程的信息，这说明Android5.0的确是做了这么一重限制了，只返回一小部分调用者本身的task和其他一些不太敏感的task。
-![enter image description here](https://raw.githubusercontent.com/wenmingvs/NotificationUtil/develop_notify/2.PNG)
+![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/nexus5%E6%89%93%E5%8D%B0.PNG)
 
 查看具体的说明，到底会除了自身的App的包名，还会返回什么给我们，发现有这么一句话，“possibly some other tasks
      * such as home that are known to not be sensitive.，说明有可能并不会返回一些不敏感的信息，这样就存在只有自身的App的包名的情况，那么即使退回到后台，他仍然会被判断为前台，此方法仍然是有缺陷的
@@ -189,10 +189,7 @@ public class MyApplication extends Application {
 ```
   3. 打开手机设置，点击安全-高级，在有权查看使用情况的应用中，为这个App打上勾
 
-![enter image description here](https://raw.githubusercontent.com/wenmingvs/NotificationUtil/develop_notify/%E6%9D%83%E9%99%90.PNG)
-
-
-
+![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/%E6%9D%83%E9%99%90.PNG)
 
 **判断函数**
 ``` java
