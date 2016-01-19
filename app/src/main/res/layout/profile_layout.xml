@@ -1,0 +1,9 @@
+<WebView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wv_webview_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="0dp"
+    android:layout_marginTop="0dp"
+    android:background="#B2DB4D"
+    android:paddingBottom="0dp"
+    android:paddingTop="0dp" />

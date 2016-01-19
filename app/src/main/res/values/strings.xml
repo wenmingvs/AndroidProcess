@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NotificationDemo</string>
+    <string name="app_name">ProcessDemo</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
 

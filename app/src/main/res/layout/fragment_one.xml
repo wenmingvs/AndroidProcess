@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragment.OneFragment">
+    tools:context="com.wenming.androidprocess.fragment.OneFragment">
 
     <TextView
         android:layout_width="match_parent"
@@ -69,6 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:checked="true"
             android:layout_marginRight="5dp" />
     </RelativeLayout>
 
@@ -263,15 +264,6 @@
         android:clickable="true"
         android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/myicon" />
 
         <TextView
             android:layout_width="wrap_content"

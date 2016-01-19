@@ -1,6 +1,7 @@
 package com.wenming.androidprocess.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -12,6 +13,7 @@ import com.wenming.andriodprocess.R;
 import com.wenming.androidprocess.adapter.ViewPagerAdapter;
 import com.wenming.androidprocess.fragment.OneFragment;
 import com.wenming.androidprocess.fragment.ProfileFragment;
+import com.wenming.androidprocess.service.MyService;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         mContext = this;
         initToolBar();
         initTabViewPager();
+        Intent intent = new Intent(mContext, MyService.class);
+        startService(intent);
     }
 
     private void initToolBar() {

@@ -7,5 +7,6 @@ public class Features {
 
     public static int BGK_METHOD = 0;
     public static boolean stopForeground = false;
+    public static boolean showProfile = false;
 
 }

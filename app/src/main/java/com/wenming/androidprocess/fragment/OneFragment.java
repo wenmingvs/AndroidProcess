@@ -91,8 +91,6 @@ public class OneFragment extends Fragment {
                     checkBox1.setChecked(true);
                     Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETRUNNING_TASK;
                     mTextView.setText(reminderlist.get(Features.BGK_METHOD));
-                } else {
-                    stopService();
                 }
             }
         });
@@ -105,8 +103,6 @@ public class OneFragment extends Fragment {
                     checkBox2.setChecked(true);
                     Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETRUNNING_PROCESS;
                     mTextView.setText(reminderlist.get(Features.BGK_METHOD));
-                } else {
-                    stopService();
                 }
             }
         });
@@ -119,8 +115,6 @@ public class OneFragment extends Fragment {
                     checkBox3.setChecked(true);
                     Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETAPPLICATION_VALUE;
                     mTextView.setText(reminderlist.get(Features.BGK_METHOD));
-                } else {
-                    stopService();
                 }
             }
         });
@@ -138,8 +132,6 @@ public class OneFragment extends Fragment {
                         Toast.makeText(mContext, "此方法需要在Android5.0以上才能使用！", Toast.LENGTH_SHORT).show();
                         checkBox4.setChecked(false);
                     }
-                } else {
-                    stopService();
                 }
             }
         });
@@ -153,8 +145,6 @@ public class OneFragment extends Fragment {
                     checkBox5.setChecked(true);
                     Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETLINUXPROCESS;
                     mTextView.setText(reminderlist.get(Features.BGK_METHOD));
-                } else {
-                    stopService();
                 }
             }
         });

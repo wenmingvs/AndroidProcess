@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class MyService extends Service {
 
-    private final float UPDATA_INTERVAL = 1;//in seconds
+    private final float UPDATA_INTERVAL = 0.5f;//in seconds
     private String status;
     private Context mContext;
     private ArrayList<String> mContentList;
@@ -55,6 +55,8 @@ public class MyService extends Service {
         mContentList.add("通过getRunningAppProcess判断");
         mContentList.add("通过ActivityLifecycleCallbacks判断");
         mContentList.add("通过UsageStatsManager判断");
+        mContentList.add("通过LinuxCoreInfo判断");
+
     }
 
     @Override
@@ -92,7 +94,7 @@ public class MyService extends Service {
     }
 
     private boolean getAppStatus() {
-        return BackgroundUtil.isForeground(mContext, BackgroundUtil.BKGMETHOD_GETAPPLICATION_VALUE, mContext.getPackageName());
+        return BackgroundUtil.isForeground(mContext, Features.BGK_METHOD, mContext.getPackageName());
     }
 
 
