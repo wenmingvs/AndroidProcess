@@ -1,4 +1,4 @@
-package com.wenming.androidprocess;
+package com.wenming.library;
 
 import android.app.Activity;
 import android.app.Application;

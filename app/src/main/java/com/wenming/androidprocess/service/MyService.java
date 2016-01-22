@@ -17,7 +17,7 @@ import com.wenming.andriodprocess.R;
 import com.wenming.androidprocess.Features;
 import com.wenming.androidprocess.activity.MainActivity;
 import com.wenming.androidprocess.receiver.MyReceiver;
-import com.wenming.androidprocess.util.BackgroundUtil;
+import com.wenming.library.BackgroundUtil;
 
 import java.util.ArrayList;
 

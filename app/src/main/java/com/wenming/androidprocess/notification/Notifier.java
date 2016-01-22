@@ -23,7 +23,7 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import com.wenming.androidprocess.activity.MainActivity;
-import com.wenming.androidprocess.util.BackgroundUtil;
+import com.wenming.library.BackgroundUtil;
 
 import java.util.HashSet;
 import java.util.List;

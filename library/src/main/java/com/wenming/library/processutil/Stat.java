@@ -15,7 +15,7 @@
  *
  */
 
-package com.wenming.androidprocess.util.processutil;
+package com.wenming.library.processutil;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -2,14 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wenming.andriodprocess">
 
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission xmlns:tools="http://schemas.android.com/tools"
-        android:name="android.permission.PACKAGE_USAGE_STATS"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
-        android:name="com.wenming.androidprocess.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"

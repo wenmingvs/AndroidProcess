@@ -15,7 +15,7 @@
  *
  */
 
-package com.wenming.androidprocess.util.processutil;
+package com.wenming.library.processutil;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

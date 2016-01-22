@@ -1,4 +1,4 @@
-package com.wenming.androidprocess.util;
+package com.wenming.library;
 
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
@@ -16,9 +16,8 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.wenming.androidprocess.MyApplication;
-import com.wenming.androidprocess.util.processutil.AndroidAppProcess;
-import com.wenming.androidprocess.util.processutil.ProcessManager;
+import com.wenming.library.processutil.AndroidAppProcess;
+import com.wenming.library.processutil.ProcessManager;
 
 import java.util.Collections;
 import java.util.Comparator;
