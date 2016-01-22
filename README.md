@@ -27,10 +27,12 @@ getRunningTask方法在Android5.0以上已经被废弃，只会返回自己和�
 
 **测试**  
 下面是在小米的机子上打印的结果，Android的版本是Android4.4.4的，我们是可以拿到全部的正在运行的应用的信息的。其中包名为com.whee.wheetalklollipop的就是我们需要判断是否处于前台的App，如今他位于第一个，说明是处于前台的
-![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/%E5%B0%8F%E7%B1%B3%E6%89%93%E5%8D%B0.PNG)
+
+![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/1.PNG)
 
 下面是Android5.0上打印的结果，我们虽然打开了很多诸如新浪微博，网易新闻，QQ等App，可是打印出来后却完全看不到了，只有自身的App的信息和一些系统进程的信息，这说明Android5.0的确是做了这么一重限制了，只返回一小部分调用者本身的task和其他一些不太敏感的task。
-![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/nexus5%E6%89%93%E5%8D%B0.PNG)
+
+![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/2.PNG)
 
 
 ``` java
@@ -189,7 +191,7 @@ public class MyApplication extends Application {
 ```
   3. 打开手机设置，点击安全-高级，在有权查看使用情况的应用中，为这个App打上勾
 
-![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/%E6%9D%83%E9%99%90.PNG)
+![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/3.PNG)
 
 **判断函数**  
 ``` java
