@@ -1,11 +1,11 @@
-# 判断App是否处于前台的方法
+# AndroidProcess
 
 按需求弹出相应的Notification，当用户点击Notification的时候，也要做出相应的处理。我们的App有可能正在前台运行，也有可能在后台运行，这时，我们在处理点击事件的时候不得不做出判断，App到底运行在前台还是在后台呢？看样子貌似很简单，觉得Android SDK应该会提供相应的API供开发者调用，结果是并没有，我们不得不通过其他手段来获取App当前的状态。
 
 
 方法一：通过RunningTask
 -----
-**原理**
+**原理**  
 当一个App处于前台的时候，会处于RunningTask的这个栈的栈顶，所以我们可以取出RunningTask的栈顶的任务进程，看他与我们的想要判断的App的包名是否相同，来达到效果
 ``` java 
     /**
@@ -22,22 +22,15 @@
     }
 ```
 
-**缺点**  
-getRunningTasks这个方法在5.0 Lollipop之后就不在对第三方App可用了，因为这样会泄漏用户的信息，为了向后兼容，这个方法只返回一小部分调用者本身的task和其他一些不太敏感的task。
+**缺点**    
+getRunningTask方法在Android5.0以上已经被废弃，只会返回自己和系统的一些不敏感的task，不再返回其他应用的task，用此方法来判断自身App是否处于后台，仍然是有效的，但是无法判断其他应用是否位于前台，因为不再能获取信息
 
-**测试**
+**测试**  
 下面是在小米的机子上打印的结果，Android的版本是Android4.4.4的，我们是可以拿到全部的正在运行的应用的信息的。其中包名为com.whee.wheetalklollipop的就是我们需要判断是否处于前台的App，如今他位于第一个，说明是处于前台的
 ![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/%E5%B0%8F%E7%B1%B3%E6%89%93%E5%8D%B0.PNG)
 
-下面是Android5.0上打印的结果，我们虽然打开了很多诸如新浪微博，网易新闻，QQ子类的App，可是打印出来后却完全看不到了，只有自身的App的信息和一些系统进程的信息，这说明Android5.0的确是做了这么一重限制了，只返回一小部分调用者本身的task和其他一些不太敏感的task。
+下面是Android5.0上打印的结果，我们虽然打开了很多诸如新浪微博，网易新闻，QQ等App，可是打印出来后却完全看不到了，只有自身的App的信息和一些系统进程的信息，这说明Android5.0的确是做了这么一重限制了，只返回一小部分调用者本身的task和其他一些不太敏感的task。
 ![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/nexus5%E6%89%93%E5%8D%B0.PNG)
-
-查看具体的说明，到底除了自身的App的包名，还会返回什么给我们，发现有这么一句话，“possibly some other tasks
-     * such as home that are known to not be sensitive.，说明返回的是一些不敏感的task信息，与上面的图片相符
-
-
-**总结**  
-getRunningTask在目前看来还是仍然可以用的，但是只能判断自己的App是否位于前台，而无法判断其他应用是否位于前台
 
 
 ``` java
@@ -49,11 +42,13 @@ getRunningTask在目前看来还是仍然可以用的，但是只能判断自己
      * own tasks, and possibly some other tasks
      * such as home that are known to not be sensitive.
 ```
+查看具体的说明，到底除了自身的App的包名，还会返回什么给我们，发现有这么一句话，“possibly some other tasks
+     * such as home that are known to not be sensitive.，说明返回的是一些不敏感的task信息，与上面的图片相符
 
 
 方法二：通过RunningProcess
 -----
-**原理**
+**原理**  
 通过runningProcess获取到一个当前正在运行的进程的List，我们遍历这个List中的每一个进程，判断这个进程的一个importance 属性是否是前台进程，并且包名是否与我们判断的APp的包名一样，如果这两个条件都符合，那么这个App就处于前台
 ``` java
    /**
@@ -79,7 +74,7 @@ getRunningTask在目前看来还是仍然可以用的，但是只能判断自己
     }
 ```
 
-**缺点**：
+**缺点**：  
 在聊天类型的App中，常常需要常驻后台来不间断的获取服务器的消息，这就需要我们把Service设置成START_STICKY，kill 后会被重启（等待5秒左右）来保证Service常驻后台。如果Service设置了这个属性，这个App的进程就会被判断是前台，代码上的表现就是appProcess.importance的值永远是 ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND，这样就永远无法判断出到底哪个是前台了。
 
 
@@ -87,7 +82,7 @@ getRunningTask在目前看来还是仍然可以用的，但是只能判断自己
 
 方法三：通过ActivityLifecycleCallbacks
 ------
-**原理**
+**原理**  
 AndroidSDK14在Application类里增加了ActivityLifecycleCallbacks，我们可以通过这个Callback拿到App所有Activity的生命周期回调。
 ``` java
  public interface ActivityLifecycleCallbacks {
@@ -183,10 +178,10 @@ public class MyApplication extends Application {
 方法四:通过使用UsageStatsManager获取
 -----
 
-**原理**
+**原理**  
 通过使用UsageStatsManager获取，此方法是Android5.0之后提供的新API，可以获取一个时间段内的应用统计信息，但是必须满足一下要求
 
-**必须：**
+**必须**  
   1. 此方法只在android5.0以上有效 
   2. AndroidManifest中加入此权限 
 ```  java
@@ -196,7 +191,7 @@ public class MyApplication extends Application {
 
 ![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/%E6%9D%83%E9%99%90.PNG)
 
-**判断函数**
+**判断函数**  
 ``` java
 
  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -251,14 +246,14 @@ public class MyApplication extends Application {
 方法五：读取Linux系统内核保存在/proc目录下的process进程信息
 ----
 
-**原理**
+**原理**  
 无意中看到乌云上有人提的一个漏洞，Linux系统内核会把process进程信息保存在/proc目录下，Shell命令去获取的他，再根据进程的属性判断是否为前台
 
-**优点**
+**优点**  
 1. 不需要任何权限
 2. 可以判断任意一个应用是否在前台，而不局限在自身应用
 
-**用法**
+**用法**  
 获取一系列正在运行的App的进程
 ``` java
 List<AndroidAppProcess> processes = ProcessManager.getRunningAppProcesses();
