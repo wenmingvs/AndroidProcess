@@ -2,11 +2,10 @@
 
 按需求弹出相应的Notification，当用户点击Notification的时候，也要做出相应的处理。我们的App有可能正在前台运行，也有可能在后台运行，这时，我们在处理点击事件的时候不得不做出判断，App到底运行在前台还是在后台呢？看样子貌似很简单，觉得Android SDK应该会提供相应的API供开发者调用，结果是并没有，我们不得不通过其他手段来获取App当前的状态。
 
-
 AndroidProcess Android App, require Android 4.0+, GPL v3 License  
 ![enter image description here](https://raw.githubusercontent.com/wenmingvs/NotifyUtil/master/sample/baiduYun.png)  
 ![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/qrcode.png)  
-[Download Link ](http://pan.baidu.com/s/1ntUcdFN)  
+[Download Link ](http://pan.baidu.com/s/1ntVyiN3)  
 
 Show Demo 
 -----
@@ -27,6 +26,9 @@ Show Demo
 
 方法一：通过RunningTask
 -----
+
+![enter image description here](http://ww2.sinaimg.cn/large/691cc151gw1f09z4gz35mg20bc0h01kx.gif)
+
 **原理**  
 当一个App处于前台的时候，会处于RunningTask的这个栈的栈顶，所以我们可以取出RunningTask的栈顶的任务进程，看他与我们的想要判断的App的包名是否相同，来达到效果
 ``` java 
@@ -72,6 +74,9 @@ getRunningTask方法在Android5.0以上已经被废弃，只会返回自己和�
 
 方法二：通过RunningProcess
 -----
+
+![enter image description here](http://ww1.sinaimg.cn/mw690/691cc151gw1f09z4vmmcgg20bc0h07wh.gif)
+
 **原理**  
 通过runningProcess获取到一个当前正在运行的进程的List，我们遍历这个List中的每一个进程，判断这个进程的一个importance 属性是否是前台进程，并且包名是否与我们判断的APP的包名一样，如果这两个条件都符合，那么这个App就处于前台
 ``` java
@@ -106,6 +111,9 @@ getRunningTask方法在Android5.0以上已经被废弃，只会返回自己和�
 
 方法三：通过ActivityLifecycleCallbacks
 ------
+
+![enter image description here](http://ww2.sinaimg.cn/mw690/691cc151gw1f09z59b1pzg20bc0h04qp.gif)
+
 **原理**  
 AndroidSDK14在Application类里增加了ActivityLifecycleCallbacks，我们可以通过这个Callback拿到App所有Activity的生命周期回调。
 ``` java
@@ -201,6 +209,7 @@ public class MyApplication extends Application {
 
 方法四:通过使用UsageStatsManager获取
 -----
+![enter image description here](http://ww1.sinaimg.cn/mw690/691cc151gw1f09z5v4g7mg20bc0h0npd.gif)
 
 **原理**  
 通过使用UsageStatsManager获取，此方法是Android5.0之后提供的新API，可以获取一个时间段内的应用统计信息，但是必须满足一下要求
@@ -269,6 +278,7 @@ public class MyApplication extends Application {
 
 方法五：读取Linux系统内核保存在/proc目录下的process进程信息
 ----
+![enter image description here](http://ww3.sinaimg.cn/mw690/691cc151gw1f09z6bjz9rg20bc0h0b29.gif)
 
 **原理**  
 无意中看到乌云上有人提的一个漏洞，Linux系统内核会把process进程信息保存在/proc目录下，Shell命令去获取的他，再根据进程的属性判断是否为前台
