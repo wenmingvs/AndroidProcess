@@ -7,9 +7,29 @@ AndroidProcess App, require Android 4.0+, GPL v3 License
 ![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/qrcode.png)  
 [Download Link ](http://pan.baidu.com/s/1pKl8ZJd)  
 
-Show Demo 
+五种判断方法展示
 -----
 ![enter image description here](http://ww3.sinaimg.cn/large/691cc151gw1f09mz3iz2cg20bc0h0b2d.gif)
+
+用法
+-----
+传入Context参数与想要判断是否位于前台的App的包名,会返回ture或者false表示App是否位于前台
+
+``` java
+
+//五种方法任选其一
+
+//使用方法一
+Boolean isForeground = BackgroundUtil.getRunningTask(context, packageName);
+//使用方法二
+Boolean isForeground = BackgroundUtil.getRunningAppProcesses(context, packageName);
+//使用方法三
+Boolean isForeground = BackgroundUtil.getApplicationValue(context);
+//使用方法四
+Boolean isForeground = BackgroundUtil.queryUsageStats(context, packageName);
+//使用方法五
+Boolean isForeground = BackgroundUtil.getLinuxCoreInfo(context, packageName);
+```
 
 五种方法的区别
 -----
@@ -22,8 +42,6 @@ Show Demo
 |方法五|读取/proc目录下的信息|否|是|当proc目录下文件夹过多时,此方法是耗时操作
 
 
-
-
 方法一：通过RunningTask
 -----
 
@@ -31,25 +49,11 @@ Show Demo
 
 **原理**  
 当一个App处于前台的时候，会处于RunningTask的这个栈的栈顶，所以我们可以取出RunningTask的栈顶的任务进程，看他与我们的想要判断的App的包名是否相同，来达到效果
-``` java 
-    /**
-     * 方法1：通过getRunningTasks判断App是否位于前台，此方法在5.0以上失效
-     *
-     * @param context     上下文参数
-     * @param packageName 需要检查是否位于栈顶的App的包名
-     * @return
-     */
-    public static boolean getRunningTask(Context context, String packageName) {
-        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        return !TextUtils.isEmpty(packageName) && packageName.equals(context.getPackageName());
-    }
-```
 
 **缺点**    
 getRunningTask方法在Android5.0以上已经被废弃，只会返回自己和系统的一些不敏感的task，不再返回其他应用的task，用此方法来判断自身App是否处于后台，仍然是有效的，但是无法判断其他应用是否位于前台，因为不再能获取信息
 
-**测试**  
+**验证**  
 下面是在小米的机子上打印的结果，Android的版本是Android4.4.4的，我们是可以拿到全部的正在运行的应用的信息的。其中包名为com.whee.wheetalklollipop的就是我们需要判断是否处于前台的App，如今他位于第一个，说明是处于前台的
 
 ![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/1.PNG)
@@ -59,19 +63,6 @@ getRunningTask方法在Android5.0以上已经被废弃，只会返回自己和�
 ![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/2.PNG)
 
 
-``` java
-deprecated As of {@link android.os.Build.VERSION_CODES#LOLLIPOP}, this method
-     * is no longer available to third party
-     * applications: the introduction of document-centric recents means
-     * it can leak person information to the caller.  For backwards compatibility,
-     * it will still retu rn a small subset of its data: at least the caller's
-     * own tasks, and possibly some other tasks
-     * such as home that are known to not be sensitive.
-```
-查看具体的说明，到底除了自身的App的包名，还会返回什么给我们，发现有这么一句话，“possibly some other tasks
-     * such as home that are known to not be sensitive.，说明返回的是一些不敏感的task信息，与上面的图片相符
-
-
 方法二：通过RunningProcess
 -----
 
@@ -79,35 +70,9 @@ deprecated As of {@link android.os.Build.VERSION_CODES#LOLLIPOP}, this method
 
 **原理**  
 通过runningProcess获取到一个当前正在运行的进程的List，我们遍历这个List中的每一个进程，判断这个进程的一个importance 属性是否是前台进程，并且包名是否与我们判断的APP的包名一样，如果这两个条件都符合，那么这个App就处于前台
-``` java
-   /**
-     * 方法2：通过getRunningAppProcesses的IMPORTANCE_FOREGROUND属性判断是否位于前台，当service需要常驻后台时候，此方法失效,
-     * 在小米 Note上此方法无效，在Nexus上正常
-     *
-     * @param context     上下文参数
-     * @param packageName 需要检查是否位于栈顶的App的包名
-     * @return
-     */
-    public static boolean getRunningAppProcesses(Context context, String packageName) {
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
-        if (appProcesses == null) {
-            return false;
-        }
-        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
-            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName.equals(packageName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-```
 
 **缺点**：  
 在聊天类型的App中，常常需要常驻后台来不间断的获取服务器的消息，这就需要我们把Service设置成START_STICKY，kill 后会被重启（等待5秒左右）来保证Service常驻后台。如果Service设置了这个属性，这个App的进程就会被判断是前台，代码上的表现就是appProcess.importance的值永远是 ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND，这样就永远无法判断出到底哪个是前台了。
-
-
-
 
 方法三：通过ActivityLifecycleCallbacks
 ------
@@ -129,79 +94,8 @@ AndroidSDK14在Application类里增加了ActivityLifecycleCallbacks，我们可�
 ```
 知道这些信息，我们就可以用更官方的办法来解决问题，当然还是利用方案二里的Activity生命周期的特性，我们只需要在Application的onCreat（）里去注册上述接口，然后由Activity回调回来运行状态即可。代码如下：
 
-``` java
-public class MyApplication extends Application {
-    private int appCount = 0;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                Log.d("wenming", "onActivityCreated");
-            }
-
-            @Override
-            public void onActivityStarted(Activity activity) {
-                Log.d("wenming", "onActivityStarted");
-                appCount++;
-            }
-
-            @Override
-            public void onActivityResumed(Activity activity) {
-                Log.d("wenming", "onActivityResumed");
-
-            }
-
-            @Override
-            public void onActivityPaused(Activity activity) {
-                Log.d("wenming", "onActivityPaused");
-            }
-
-            @Override
-            public void onActivityStopped(Activity activity) {
-                Log.d("wenming", "onActivityStopped");
-                appCount--;
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-                Log.d("wenming", "onActivitySaveInstanceState");
-            }
-
-            @Override
-            public void onActivityDestroyed(Activity activity) {
-                Log.d("wenming", "onActivityDestroyed");
-            }
-        });
-    }
-
-    public int getAppCount() {
-        return appCount;
-    }
-
-    public void setAppCount(int appCount) {
-        this.appCount = appCount;
-    }
-}
-```
-
 在需要的判断的地方调用以下方法即可：
 
-``` java
- /**
-     * 方法3：通过ActivityLifecycleCallbacks来批量统计Activity的生命周期，来做判断，此方法在API 14以上均有效，但是需要在Application中注册此回调接口
-     * 必须：
-     * 1. 自定义Application并且注册ActivityLifecycleCallbacks接口
-     * 2. AndroidManifest.xml中更改默认的Application为自定义
-     * 3. 当Application因为内存不足而被Kill掉时，这个方法仍然能正常使用。虽然全局变量的值会因此丢失，但是再次进入App时候会重新统计一次的
-     */
-
-    public static boolean getApplicationValue(Context context) {
-        return ((MyApplication) ((Service) context).getApplication()).getAppCount() > 0;
-    }
-```
 不管以哪种方式，只要捕捉到APP切到后台的动作，就可以做你需要的事件处理了，其实还是一个比较常见的需求，比如通讯类APP切到后台的时候消息以notification的形式push过来，比如比较私密一点的APP切到后台的时候再次切回来要先输入手势密码等等。
 
 
@@ -223,57 +117,6 @@ public class MyApplication extends Application {
   3. 打开手机设置，点击安全-高级，在有权查看使用情况的应用中，为这个App打上勾
 
 ![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/3.PNG)
-
-**判断函数**  
-``` java
-
- @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static boolean queryUsageStats(Context context, String packageName) {
-        class RecentUseComparator implements Comparator<UsageStats> {
-            @Override
-            public int compare(UsageStats lhs, UsageStats rhs) {
-                return (lhs.getLastTimeUsed() > rhs.getLastTimeUsed()) ? -1 : (lhs.getLastTimeUsed() == rhs.getLastTimeUsed()) ? 0 : 1;
-            }
-        }
-        RecentUseComparator mRecentComp = new RecentUseComparator();
-        long ts = System.currentTimeMillis();
-        UsageStatsManager mUsageStatsManager = (UsageStatsManager) context.getSystemService("usagestats");
-        List<UsageStats> usageStats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, ts - 1000 * 10, ts);
-        if (usageStats == null || usageStats.size() == 0) {
-            if (HavaPermissionForTest(context) == false) {
-                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-                Toast.makeText(context, "权限不够\n请打开手机设置，点击安全-高级，在有权查看使用情况的应用中，为这个App打上勾", Toast.LENGTH_SHORT).show();
-            }
-            return false;
-        }
-        Collections.sort(usageStats, mRecentComp);
-        String currentTopPackage = usageStats.get(0).getPackageName();
-        if (currentTopPackage.equals(packageName)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * 判断是否拥有PACKAGE_USAGE_STATS权限
-     */
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    private static boolean HavaPermissionForTest(Context context) {
-        try {
-            PackageManager packageManager = context.getPackageManager();
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
-            AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
-            return (mode == AppOpsManager.MODE_ALLOWED);
-        } catch (PackageManager.NameNotFoundException e) {
-            return true;
-        }
-    }
-
-``` 
 
 
 方法五：读取Linux系统内核保存在/proc目录下的process进程信息

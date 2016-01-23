@@ -172,7 +172,7 @@ public class BackgroundUtil {
      *
      * @param packageName 需要检查是否位于栈顶的App的包名
      */
-    private static boolean getLinuxCoreInfo(Context context, String packageName) {
+    public static boolean getLinuxCoreInfo(Context context, String packageName) {
 
         List<AndroidAppProcess> processes = ProcessManager.getRunningForegroundApps(context);
         for (AndroidAppProcess appProcess : processes) {
