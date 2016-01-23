@@ -8,11 +8,14 @@ AndroidProcess Android App, require Android 4.0+, GPL v3 License
 ![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/qrcode.png)  
 [Download Link ](http://pan.baidu.com/s/1ntUcdFN)  
 
-
+Show Demo 
+-----
 ![enter image description here](http://ww3.sinaimg.cn/large/691cc151gw1f09mz3iz2cg20bc0h0b2d.gif)
 
+五种方法的区别
+-----
 |方法|判断原理|是否需要权限读取|是否可以判断其他应用位于前台|特点
-|:
+| ------ | ------ | ------ | ------ | ------ |
 |方法一|RunningTask|否|Android4.0系列可以,5.0以上机器不行|5.0此方法被废弃
 |方法二|RunningProcess|否|当App存在后台常驻的Service时失效|无
 |方法三|ActivityLifecycleCallbacks|否|否|简单有效,代码最少
@@ -24,9 +27,6 @@ AndroidProcess Android App, require Android 4.0+, GPL v3 License
 
 方法一：通过RunningTask
 -----
-
-
-
 **原理**  
 当一个App处于前台的时候，会处于RunningTask的这个栈的栈顶，所以我们可以取出RunningTask的栈顶的任务进程，看他与我们的想要判断的App的包名是否相同，来达到效果
 ``` java 
