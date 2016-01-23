@@ -1,0 +1,92 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:2:1-34:12
+	xmlns:android
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:2:11-69
+	package
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:3:5-41
+		INJECTED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml
+uses-permission#android.permission.GET_TASKS
+ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:5:5-68
+	android:name
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:5:22-65
+uses-permission#android.permission.PACKAGE_USAGE_STATS
+ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:6:5-8:47
+	xmlns:tools
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:6:22-68
+	android:name
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:7:9-62
+	tools:ignore
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:8:9-44
+uses-permission#android.permission.INTERNET
+ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:9:5-67
+	android:name
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:9:22-64
+application
+ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:11:5-32:19
+MERGED from [com.android.support:appcompat-v7:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:design:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/design/23.1.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:appcompat-v7:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/AndroidManifest.xml:22:5-20
+	android:supportsRtl
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:16:9-35
+	android:label
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:15:9-41
+	android:allowBackup
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:13:9-35
+	android:icon
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:14:9-38
+	android:theme
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:17:9-47
+	android:name
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:12:9-64
+activity#com.wenming.androidprocess.activity.MainActivity
+ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:18:9-26:20
+	android:label
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:20:13-45
+	android:name
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:19:13-76
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:21:13-25:29
+action#android.intent.action.MAIN
+ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:22:17-69
+	android:name
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:22:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:24:17-77
+	android:name
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:24:27-74
+service#com.wenming.androidprocess.service.MyService
+ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:28:9-80
+	android:name
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:28:18-77
+receiver#com.wenming.androidprocess.receiver.MyReceiver
+ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:30:9-83
+	android:name
+		ADDED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml:30:19-80
+uses-sdk
+INJECTED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.android.support:appcompat-v7:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:design:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/design/23.1.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:appcompat-v7:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.1.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.1.1] /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/AndroidManifest.xml:20:5-43
+	android:targetSdkVersion
+		INJECTED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/wenmingvs/Documents/Android/WorkSpace/AndroidProcess/app/src/main/AndroidManifest.xml
