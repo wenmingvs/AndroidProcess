@@ -1,6 +1,5 @@
 package com.wenming.androidprocess.fragment;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wenming.andriodprocess.R;
@@ -32,9 +30,7 @@ public class OneFragment extends Fragment {
     private View mView;
 
     private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5;
-    private TextView mTextView;
     private ArrayList<String> reminderlist;
-    private NotificationManager notificationManager;
 
     public OneFragment(Context context) {
         mContext = context;
@@ -55,14 +51,11 @@ public class OneFragment extends Fragment {
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_one, container, false);
         initCheckBox();
-        initTextView();
+        //initTextView();
         layoutClick();
         return mView;
     }
 
-    private void initTextView() {
-        mTextView = (TextView) mView.findViewById(R.id.reminder);
-    }
 
     private void startService() {
         Features.stopForeground = false;
@@ -90,7 +83,6 @@ public class OneFragment extends Fragment {
                     deselectAll();
                     checkBox1.setChecked(true);
                     Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETRUNNING_TASK;
-                    mTextView.setText(reminderlist.get(Features.BGK_METHOD));
                 }
             }
         });
@@ -102,7 +94,7 @@ public class OneFragment extends Fragment {
                     deselectAll();
                     checkBox2.setChecked(true);
                     Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETRUNNING_PROCESS;
-                    mTextView.setText(reminderlist.get(Features.BGK_METHOD));
+
                 }
             }
         });
@@ -114,7 +106,7 @@ public class OneFragment extends Fragment {
                     deselectAll();
                     checkBox3.setChecked(true);
                     Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETAPPLICATION_VALUE;
-                    mTextView.setText(reminderlist.get(Features.BGK_METHOD));
+
                 }
             }
         });
@@ -127,7 +119,7 @@ public class OneFragment extends Fragment {
                         deselectAll();
                         checkBox4.setChecked(true);
                         Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETUSAGESTATS;
-                        mTextView.setText(reminderlist.get(Features.BGK_METHOD));
+
                     } else {
                         Toast.makeText(mContext, "此方法需要在Android5.0以上才能使用！", Toast.LENGTH_SHORT).show();
                         checkBox4.setChecked(false);
@@ -144,7 +136,7 @@ public class OneFragment extends Fragment {
                     deselectAll();
                     checkBox5.setChecked(true);
                     Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETLINUXPROCESS;
-                    mTextView.setText(reminderlist.get(Features.BGK_METHOD));
+
                 }
             }
         });

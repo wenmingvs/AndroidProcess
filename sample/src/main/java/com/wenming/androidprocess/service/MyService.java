@@ -7,7 +7,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
@@ -66,8 +65,8 @@ public class MyService extends Service {
             intent = new Intent(mContext, MainActivity.class);
             pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext)
-                    .setSmallIcon(R.drawable.myicon)
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.myicon))
+                    .setSmallIcon(R.drawable.largeicon)
+               //     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.largeicon))
                     .setContentText(mContentList.get(Features.BGK_METHOD))
                     .setContentTitle("App处于" + status)
                     .setAutoCancel(true)

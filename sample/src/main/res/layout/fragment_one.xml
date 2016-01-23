@@ -15,22 +15,19 @@
         android:text="请尝试让App处于前台或后台并观察通知栏的变化"
         android:textColor="#808080" />
 
-    <TextView
-        android:id="@+id/reminder"
+    <uk.co.senab.photoview.PhotoView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scaleImage"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="8dp"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:text="@string/reminder1"
-        android:textColor="#111111"
-        android:textSize="15sp" />
+        android:layout_height="200dp"
+        android:layout_gravity="top"
+        android:scaleType="centerInside"
+        android:src="@drawable/image2" />
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="1dp"
         android:background="@drawable/clickbackground"
         android:clickable="true"
         android:orientation="horizontal">
