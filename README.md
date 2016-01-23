@@ -3,8 +3,30 @@
 按需求弹出相应的Notification，当用户点击Notification的时候，也要做出相应的处理。我们的App有可能正在前台运行，也有可能在后台运行，这时，我们在处理点击事件的时候不得不做出判断，App到底运行在前台还是在后台呢？看样子貌似很简单，觉得Android SDK应该会提供相应的API供开发者调用，结果是并没有，我们不得不通过其他手段来获取App当前的状态。
 
 
+AndroidProcess Android App, require Android 4.0+, GPL v3 License  
+![enter image description here](https://raw.githubusercontent.com/wenmingvs/NotifyUtil/master/sample/baiduYun.png)
+![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/qrcode.png)
+[Download Link ](http://pan.baidu.com/s/1ntUcdFN)
+
+
+![enter image description here](http://ww3.sinaimg.cn/large/691cc151gw1f09mz3iz2cg20bc0h0b2d.gif)
+
+|方法|判断原理|是否需要权限读取|是否可以判断其他应用位于前台|特点
+|:
+|方法一|RunningTask|否|Android4.0系列可以,5.0以上机器不行|5.0此方法被废弃
+|方法二|RunningProcess|否|当App存在后台常驻的Service时失效|无
+|方法三|ActivityLifecycleCallbacks|否|否|简单有效,代码最少
+|方法四|UsageStatsManager|是|是|最符合Google规范的判断方法
+|方法五|读取/proc目录下的信息|否|是|当proc目录下文件夹过多时,此方法是耗时操作
+
+
+
+
 方法一：通过RunningTask
 -----
+
+
+
 **原理**  
 当一个App处于前台的时候，会处于RunningTask的这个栈的栈顶，所以我们可以取出RunningTask的栈顶的任务进程，看他与我们的想要判断的App的包名是否相同，来达到效果
 ``` java 
@@ -51,7 +73,7 @@ getRunningTask方法在Android5.0以上已经被废弃，只会返回自己和�
 方法二：通过RunningProcess
 -----
 **原理**  
-通过runningProcess获取到一个当前正在运行的进程的List，我们遍历这个List中的每一个进程，判断这个进程的一个importance 属性是否是前台进程，并且包名是否与我们判断的APp的包名一样，如果这两个条件都符合，那么这个App就处于前台
+通过runningProcess获取到一个当前正在运行的进程的List，我们遍历这个List中的每一个进程，判断这个进程的一个importance 属性是否是前台进程，并且包名是否与我们判断的APP的包名一样，如果这两个条件都符合，那么这个App就处于前台
 ``` java
    /**
      * 方法2：通过getRunningAppProcesses的IMPORTANCE_FOREGROUND属性判断是否位于前台，当service需要常驻后台时候，此方法失效,
