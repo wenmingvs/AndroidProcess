@@ -1,8 +1,8 @@
 # AndroidProcess
 
-按需求弹出相应的Notification，当用户点击Notification的时候，也要做出相应的处理。我们的App有可能正在前台运行，也有可能在后台运行，这时，我们在处理点击事件的时候不得不做出判断，App到底运行在前台还是在后台呢？看样子貌似很简单，觉得Android SDK应该会提供相应的API供开发者调用，结果是并没有，我们不得不通过其他手段来获取App当前的状态。
+提供一个判断App是否处于前台的工具类,拥有多达5种判断方法,最后一种方法堪称Android黑科技,既可以突破Android5.0以上的权限封锁,获取任意前台App的包名,又不需要权限.欢迎大家star我的新项目
 
-AndroidProcess Android App, require Android 4.0+, GPL v3 License  
+AndroidProcess App, require Android 4.0+, GPL v3 License  
 ![enter image description here](https://raw.githubusercontent.com/wenmingvs/NotifyUtil/master/sample/baiduYun.png)  
 ![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/qrcode.png)  
 [Download Link ](http://pan.baidu.com/s/1ntVyiN3)  
