@@ -122,7 +122,7 @@ AndroidSDK14在Application类里增加了ActivityLifecycleCallbacks，我们可�
 无意中看到乌云上有人提的一个漏洞，Linux系统内核会把process进程信息保存在/proc目录下，Shell命令去获取的他，再根据进程的属性判断是否为前台
 
 **优点**  
-1. 不需要任何权限
+1. 不需要任何权限  
 2. 可以判断任意一个应用是否在前台，而不局限在自身应用
 
 **缺点**  
