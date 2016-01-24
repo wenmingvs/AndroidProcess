@@ -92,14 +92,9 @@ AndroidSDK14在Application类里增加了ActivityLifecycleCallbacks，我们可�
         void onActivityDestroyed(Activity activity);
     }
 ```
-知道这些信息，我们就可以用更官方的办法来解决问题，当然还是利用方案二里的Activity生命周期的特性，我们只需要在Application的onCreat（）里去注册上述接口，然后由Activity回调回来运行状态即可。代码如下：
+知道这些信息，我们就可以用更官方的办法来解决问题，当然还是利用方案二里的Activity生命周期的特性，我们只需要在Application的onCreat（）里去注册上述接口，然后由Activity回调回来运行状态即可。
 
-在需要的判断的地方调用以下方法即可：
-
-不管以哪种方式，只要捕捉到APP切到后台的动作，就可以做你需要的事件处理了，其实还是一个比较常见的需求，比如通讯类APP切到后台的时候消息以notification的形式push过来，比如比较私密一点的APP切到后台的时候再次切回来要先输入手势密码等等。
-
-
-可能还有人在纠结，我用back键切到后台和用Home键切到后台，一样吗？上述方法都适用吗？在Android应用开发中一般认为back键是可以捕获的，而Home键是不能捕获的（除非修改framework）,但是上述方法从Activity生命周期着手解决问题，虽然这两种方式的Activity生命周期并不相同，但是二者都会执行onStop（）；所以并不关心到底是触发了哪个键切入后台的。
+可能还有人在纠结，我用back键切到后台和用Home键切到后台，一样吗？以上方法适用吗？在Android应用开发中一般认为back键是可以捕获的，而Home键是不能捕获的（除非修改framework）,但是上述方法从Activity生命周期着手解决问题，虽然这两种方式的Activity生命周期并不相同，但是二者都会执行onStop（）；所以并不关心到底是触发了哪个键切入后台的。另外,Application是否被销毁,都不会影响判断的正确性
 
 方法四:通过使用UsageStatsManager获取
 -----
@@ -108,7 +103,7 @@ AndroidSDK14在Application类里增加了ActivityLifecycleCallbacks，我们可�
 **原理**  
 通过使用UsageStatsManager获取，此方法是Android5.0之后提供的新API，可以获取一个时间段内的应用统计信息，但是必须满足一下要求
 
-**必须**  
+**使用前提**  
   1. 此方法只在android5.0以上有效 
   2. AndroidManifest中加入此权限 
 ```  java
@@ -129,6 +124,9 @@ AndroidSDK14在Application类里增加了ActivityLifecycleCallbacks，我们可�
 **优点**  
 1. 不需要任何权限
 2. 可以判断任意一个应用是否在前台，而不局限在自身应用
+
+**缺点**  
+1. 当/proc下文件夹过多时,此方法是耗时操作
 
 **用法**  
 获取一系列正在运行的App的进程
