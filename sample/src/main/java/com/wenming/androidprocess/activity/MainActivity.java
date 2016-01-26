@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setVisibility(View.GONE);
     }
 
-    private void initTabViewPager() {
+        private void initTabViewPager() {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new OneFragment(mContext), getString(R.string.tab1));

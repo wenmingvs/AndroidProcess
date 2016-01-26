@@ -7,11 +7,11 @@
     <string name="tab2">通知的样式</string>
     <string name="tab3">关于我</string>
 
-    <string name="reminder1">方法1：\ngetRunningTasks方法在5.0 Lollipop之后就不在对第三方App可用了，因为这样会泄漏用户的敏感信息，为了向后兼容，这个方法只返回一小部分调用者本身的task和其他一些系统的task,无法得到全部应用task，因此在Android5.0会判断不准确的情况</string>
-    <string name="reminder2">方法2：\ngetRunningAppProcesses方法在Nexus上测试正常，但是在小米Note上测试失败，因为在聊天类型的App中，常常需要常驻后台来不间断的获取服务器的消息，如果把我们把Service设置成START_STICKY来保证Service重启来达到常驻后台的效果，就会被小米系统判断是前台，appProcess.importance的值永远都会是forground，所以无法区别前后台 </string>
-    <string name="reminder3">方法3：\n通过ActivityLifecycleCallbacks来批量统计Activity的生命周期，来做判断，此方法在API 14以上均有效，\n\n\n注意：\n1. 请务必在Application中注册此回调接口</string>
+    <string name="reminder1">方法1：\ngetRunningTask方法在Android5.0以上已经被废弃，只会返回自己和系统的一些不敏感的task，不再返回其他应用的task，用此方法来判断自身App是否处于后台，仍然是有效的，但是无法判断其他应用是否位于前台，因为不再能获取信息</string>
+    <string name="reminder2">方法2：\ngetRunningAppProcesses方法在Nexus5上测试正常，但是在小米Note上测试失败，因为在聊天类型的App中，常常需要常驻后台来不间断的获取服务器的消息，如果把我们把Service设置成START_STICKY来保证Service重启来达到常驻后台的效果，就会被小米系统判断是前台，appProcess.importance的值永远都会是forground，所以无法区别前后台 </string>
+    <string name="reminder3">方法3：\n通过ActivityLifecycleCallbacks来批量管理Activity的生命周期，进而实现判断，此方法在API 14以上均有效，\n\n\n注意：\n1. 请务必在Application中注册此回调接口</string>
     <string name="reminder4">方法4：\n通过使用UsageStatsManager获取，此方法是Android5.0之后提供的新API，可以获取一个时间段内的应用统计信息\n\n\n注意：\n1. 务必提供在AndroidManifest中加入对应的权限\n2. 打开手机设置，点击安全-高级，在有权查看使用情况的应用中，为这个App打上勾</string>
-    <string name="reminder5">方法5：\nlinux系统内核会把process进程信息保存在/proc目录下,通过读取此进程信息来判断位于前台的任一应用</string>
+    <string name="reminder5">方法5：\nLinux系统内核会把Process进程信息保存在/proc目录下,通过遍历进程的属性信息来判断位于前台的任一应用</string>
 
 
 </resources>
