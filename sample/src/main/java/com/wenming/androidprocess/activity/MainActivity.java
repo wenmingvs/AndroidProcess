@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Context mContext;
+    private Intent intent;
 
 
     @Override
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         mContext = this;
         initToolBar();
         initTabViewPager();
-        Intent intent = new Intent(mContext, MyService.class);
+        intent = new Intent(mContext, MyService.class);
         startService(intent);
     }
 
@@ -53,4 +54,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setCurrentItem(0, false);
     }
 
+    @Override
+    protected void onDestroy() {
+        stopService(intent);
+        super.onDestroy();
+    }
 }
