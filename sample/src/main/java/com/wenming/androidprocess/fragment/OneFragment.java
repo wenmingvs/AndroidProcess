@@ -32,10 +32,6 @@ public class OneFragment extends Fragment {
     private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5;
     private ArrayList<String> reminderlist;
 
-    public OneFragment(Context context) {
-        mContext = context;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,17 +52,24 @@ public class OneFragment extends Fragment {
         return mView;
     }
 
+    public OneFragment(Context context) {
+        mContext = context;
+    }
+
 
     private void startService() {
-        Features.stopForeground = false;
+        Features.showForeground = true;
         Intent intent = new Intent(mContext, MyService.class);
         mContext.startService(intent);
     }
 
-    private void stopService() {
-        Features.stopForeground = true;
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Features.showForeground = false;
         Intent intent = new Intent(mContext, MyService.class);
         mContext.stopService(intent);
+        deselectAll();
     }
 
     private void initCheckBox() {
@@ -149,7 +152,7 @@ public class OneFragment extends Fragment {
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Features.stopForeground = true;
+                Features.showForeground = false;
                 Intent intent = new Intent(mContext, MyService.class);
                 mContext.stopService(intent);
                 deselectAll();
