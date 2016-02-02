@@ -3,8 +3,6 @@
 提供一个判断App是否处于前台的工具类,拥有多达5种判断方法,最后一种方法堪称Android黑科技（并非我原创）,既可以突破Android5.0以上的权限封锁,获取任意前台App的包名,又不需要权限
 
 AndroidProcess App, require Android 4.0+, GPL v3 License  
-![enter image description here](https://raw.githubusercontent.com/wenmingvs/NotifyUtil/master/sample/baiduYun.png)  
-![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/qrcode.png)  
 [Download Link ](https://github.com/wenmingvs/AndroidProcess/raw/master/demo.apk)  
 
 五种判断方法展示
