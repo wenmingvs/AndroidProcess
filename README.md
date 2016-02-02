@@ -118,8 +118,10 @@ AndroidSDK14在Application类里增加了ActivityLifecycleCallbacks，我们可�
 ----
 ![enter image description here](http://ww3.sinaimg.cn/mw690/691cc151gw1f09z6bjz9rg20bc0h0b29.gif)
 
+
+
 **原理**  
-无意中看到乌云上有人提的一个漏洞，Linux系统内核会把process进程信息保存在/proc目录下，Shell命令去获取的他，再根据进程的属性判断是否为前台
+无意中看到乌云上有人提的一个漏洞，Linux系统内核会把process进程信息保存在/proc目录下，Shell命令去获取的他，再根据进程的属性判断是否为前台。国外已经有大神把这个漏洞做成对应的功能，具体的项目在这里，https://github.com/jaredrummler/AndroidProcesses ，最后一种方法引用的是他所提供的代码
 
 **优点**  
 1. 不需要任何权限  
