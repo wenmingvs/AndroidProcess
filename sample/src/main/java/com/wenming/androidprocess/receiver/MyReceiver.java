@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.wenming.androidprocess.Features;
 import com.wenming.androidprocess.service.MyService;
 
 
@@ -13,7 +14,10 @@ import com.wenming.androidprocess.service.MyService;
 public class MyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent i = new Intent(context, MyService.class);
-        context.startService(i);
+        if (Features.showForeground) {
+            Intent i = new Intent(context, MyService.class);
+            context.startService(i);
+        }
+
     }
 }

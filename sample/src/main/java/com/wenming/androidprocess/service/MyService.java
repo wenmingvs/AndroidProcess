@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.wenming.andriodprocess.R;
 import com.wenming.androidprocess.Features;
@@ -44,35 +45,31 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d("wenming", "Service的onCreate方法调用");
         mContext = this;
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         initContentData();
         startNotification();
     }
 
-
-    private void initContentData() {
-        mContentList = new ArrayList<String>();
-        mContentList.add("通过getRunningTask判断");
-        mContentList.add("通过getRunningAppProcess判断");
-        mContentList.add("通过ActivityLifecycleCallbacks判断");
-        mContentList.add("通过UsageStatsManager判断");
-        mContentList.add("通过LinuxCoreInfo判断");
-
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d("wenming", "Service的onStartCommand方法调用");
         if (Features.showForeground) {
-            manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            int updateTime = (int) UPDATA_INTERVAL * 1000;
-            long triggerAtTime = SystemClock.elapsedRealtime() + updateTime;
-            Intent i = new Intent(mContext, MyReceiver.class);
-            PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, i, 0);
-            manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
-            updateNotification();
+            synchronized (MyService.class) {
+                Log.d("wenming", "Service的发送广播");
+                manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                int updateTime = (int) UPDATA_INTERVAL * 1000;
+                long triggerAtTime = SystemClock.elapsedRealtime() + updateTime;
+                Intent i = new Intent(mContext, MyReceiver.class);
+                PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, i, 0);
+                manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
+                updateNotification();
+            }
         } else {
             stopForeground(true);
+            mNotificationManager.cancelAll();
+            stopSelf();
         }
         return Service.START_NOT_STICKY;
     }
@@ -81,7 +78,17 @@ public class MyService extends Service {
     public void onDestroy() {
         Features.showForeground = false;
         stopForeground(true);
+        Log.d("wenming", "Service的onDestroy方法调用");
         super.onDestroy();
+    }
+
+    private void initContentData() {
+        mContentList = new ArrayList<String>();
+        mContentList.add("通过getRunningTask判断");
+        mContentList.add("通过getRunningAppProcess判断");
+        mContentList.add("通过ActivityLifecycleCallbacks判断");
+        mContentList.add("通过UsageStatsManager判断");
+        mContentList.add("通过LinuxCoreInfo判断");
     }
 
     private boolean getAppStatus() {
