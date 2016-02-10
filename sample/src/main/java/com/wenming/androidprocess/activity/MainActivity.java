@@ -15,6 +15,7 @@ import com.wenming.androidprocess.adapter.ViewPagerAdapter;
 import com.wenming.androidprocess.fragment.OneFragment;
 import com.wenming.androidprocess.fragment.ProfileFragment;
 import com.wenming.androidprocess.service.MyService;
+import com.wenming.library.BackgroundUtil;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         Features.showForeground = false;
+        Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETRUNNING_TASK;
         stopService(intent);
         super.onDestroy();
     }

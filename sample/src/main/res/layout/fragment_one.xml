@@ -229,7 +229,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="8dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/myicon" />
+                android:src="@drawable/effectivematrixlogo" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -250,7 +250,7 @@
                 android:textSize="13sp" />
 
             <CheckBox
-                android:id="@+id/checkbox6"
+                android:id="@+id/checkbox5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -296,7 +296,7 @@
                 android:textSize="13sp" />
 
             <CheckBox
-                android:id="@+id/checkbox5"
+                android:id="@+id/checkbox6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

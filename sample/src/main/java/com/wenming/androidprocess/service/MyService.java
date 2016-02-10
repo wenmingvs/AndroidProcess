@@ -98,10 +98,10 @@ public class MyService extends Service {
         mBuilder.setContentText(mContentList.get(Features.BGK_METHOD));
         if (Features.BGK_METHOD == BackgroundUtil.BKGMETHOD_GETACCESSIBILITYSERVICE) {
             mBuilder.setContentTitle("请到LogCat中观察前后台变化");
+            Log.d("wenming", "**方法五** App处于" + status);
         }
         notification = mBuilder.build();
         mNotificationManager.notify(NOTICATION_ID, notification);
-        Log.d("wenming", "**方法五** App处于" + status);
     }
 
     private void initContentData() {
@@ -110,9 +110,8 @@ public class MyService extends Service {
         mContentList.add("通过getRunningAppProcess判断");
         mContentList.add("通过ActivityLifecycleCallbacks判断");
         mContentList.add("通过UsageStatsManager判断");
-        mContentList.add("通过LinuxCoreInfo判断");
         mContentList.add("通过AccessibilityService判断");
-
+        mContentList.add("通过LinuxCoreInfo判断");
     }
 
     private boolean getAppStatus() {

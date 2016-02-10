@@ -32,8 +32,8 @@ public class BackgroundUtil {
     public static final int BKGMETHOD_GETRUNNING_PROCESS = 1;
     public static final int BKGMETHOD_GETAPPLICATION_VALUE = 2;
     public static final int BKGMETHOD_GETUSAGESTATS = 3;
-    public static final int BKGMETHOD_GETLINUXPROCESS = 4;
-    public static final int BKGMETHOD_GETACCESSIBILITYSERVICE = 5;
+    public static final int BKGMETHOD_GETACCESSIBILITYSERVICE = 4;
+    public static final int BKGMETHOD_GETLINUXPROCESS = 5;
 
 
     /**
@@ -53,10 +53,10 @@ public class BackgroundUtil {
                 return getApplicationValue(context);
             case BKGMETHOD_GETUSAGESTATS:
                 return queryUsageStats(context, packageName);
-            case BKGMETHOD_GETLINUXPROCESS:
-                return getLinuxCoreInfo(context, packageName);
             case BKGMETHOD_GETACCESSIBILITYSERVICE:
                 return getFromAccessibilityService(context, packageName);
+            case BKGMETHOD_GETLINUXPROCESS:
+                return getLinuxCoreInfo(context, packageName);
             default:
                 return false;
         }
@@ -197,7 +197,7 @@ public class BackgroundUtil {
     }
 
     /**
-     * 方法6：无意中看到乌云上有人提的一个漏洞，Linux系统内核会把process进程信息保存在/proc目录下，Shell命令去获取的他，再根据进程的属性判断是否为前台
+     * 方法6：无意中看到乌云上有人提的一个漏洞，Linux系统内核会把process进程信息保存在/proc目录下，使用Shell命令去获取的他，再根据进程的属性判断是否为前台
      *
      * @param packageName 需要检查是否位于栈顶的App的包名
      */
@@ -205,11 +205,12 @@ public class BackgroundUtil {
 
         List<AndroidAppProcess> processes = ProcessManager.getRunningForegroundApps(context);
         for (AndroidAppProcess appProcess : processes) {
-            if (appProcess.getPackageName().equals(packageName)) {
+            if (appProcess.getPackageName().equals(packageName) && appProcess.foreground) {
                 return true;
             }
         }
         return false;
+
     }
 
 

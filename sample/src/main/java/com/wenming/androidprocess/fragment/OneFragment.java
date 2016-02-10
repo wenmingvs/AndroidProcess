@@ -137,7 +137,6 @@ public class OneFragment extends Fragment {
                     deselectAll();
                     checkBox5.setChecked(true);
                     Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETACCESSIBILITYSERVICE;
-
                 }
             }
         });
