@@ -185,7 +185,7 @@ public class BackgroundUtil {
         if (DetectService.isAccessibilitySettingsOn(context) == true) {
             DetectService detectService = DetectService.getInstance();
             String foreground = detectService.getForegroundPackage();
-            Log.d("wenming", "当前窗口焦点对应的包名为： =" + foreground);
+            Log.d("wenming", "**方法五** 当前窗口焦点对应的包名为： =" + foreground);
             return packageName.equals(foreground);
         } else {
             Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);

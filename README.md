@@ -122,7 +122,7 @@ AndroidSDK14在Application类里增加了ActivityLifecycleCallbacks，我们可�
 
 此方法无法直观的通过下拉通知视图来进行前后台的观察，请到LogCat中进行观察即可，以下是LogCat中打印的信息
 
-![enter image description here](http://ww3.sinaimg.cn/large/691cc151gw1f0ui5xcf7gj20ap0a0wgt.jpg)  
+![enter image description here](http://ww3.sinaimg.cn/large/691cc151gw1f0uiy60md3j20fs07omzj.jpg)  
  
 **原理**
 Android 辅助功能(AccessibilityService) 为我们提供了一系列的事件回调，帮助我们指示一些用户界面的状态变化。 我们可以派生辅助功能类，进而对不同的 AccessibilityEvent 进行处理。 同样的，这个服务就可以用来判断当前的前台应用

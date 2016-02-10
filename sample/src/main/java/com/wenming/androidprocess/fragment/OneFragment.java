@@ -64,15 +64,9 @@ public class OneFragment extends Fragment {
 
 
     private void startService() {
-        Features.stopForeground = false;
+        Features.showForeground = true;
         Intent intent = new Intent(mContext, MyService.class);
         mContext.startService(intent);
-    }
-
-    private void stopService() {
-        Features.stopForeground = true;
-        Intent intent = new Intent(mContext, MyService.class);
-        mContext.stopService(intent);
     }
 
     private void initCheckBox() {
@@ -81,6 +75,7 @@ public class OneFragment extends Fragment {
         checkBox3 = (CheckBox) mView.findViewById(R.id.checkbox3);
         checkBox4 = (CheckBox) mView.findViewById(R.id.checkbox4);
         checkBox5 = (CheckBox) mView.findViewById(R.id.checkbox5);
+        checkBox6 = (CheckBox) mView.findViewById(R.id.checkbox6);
         checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -141,7 +136,7 @@ public class OneFragment extends Fragment {
                     startService();
                     deselectAll();
                     checkBox5.setChecked(true);
-                    Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETLINUXPROCESS;
+                    Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETACCESSIBILITYSERVICE;
 
                 }
             }
@@ -153,7 +148,7 @@ public class OneFragment extends Fragment {
                     startService();
                     deselectAll();
                     checkBox6.setChecked(true);
-                    Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETACCESSIBILITYSERVICE;
+                    Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETLINUXPROCESS;
                 }
             }
         });
@@ -166,7 +161,7 @@ public class OneFragment extends Fragment {
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Features.stopForeground = true;
+                Features.showForeground = false;
                 Intent intent = new Intent(mContext, MyService.class);
                 mContext.stopService(intent);
                 deselectAll();
