@@ -2,7 +2,7 @@
 
 提供一个判断App是否处于前台的工具类,拥有多达6种判断方法,最后一种方法堪称Android黑科技,既可以突破Android5.0以上的权限封锁,获取任意前台App的包名,又不需要权限.欢迎大家star我的新项目
 
-[Download Link ](http://pan.baidu.com/s/1pKl8ZJd)  
+[Download Link ](https://github.com/wenmingvs/AndroidProcess/blob/master/demo.apk)  
 
 六种判断方法展示
 -----
