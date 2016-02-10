@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.wenming.andriodprocess.R;
+import com.wenming.androidprocess.Features;
 import com.wenming.androidprocess.adapter.ViewPagerAdapter;
 import com.wenming.androidprocess.fragment.OneFragment;
 import com.wenming.androidprocess.fragment.ProfileFragment;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Context mContext;
+    private Intent intent;
 
 
     @Override
@@ -31,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         mContext = this;
         initToolBar();
         initTabViewPager();
-        Intent intent = new Intent(mContext, MyService.class);
+        Features.showForeground = true;
+        intent = new Intent(mContext, MyService.class);
         startService(intent);
     }
 
@@ -53,4 +56,10 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setCurrentItem(0, false);
     }
 
+    @Override
+    protected void onDestroy() {
+        Features.showForeground = false;
+        stopService(intent);
+        super.onDestroy();
+    }
 }

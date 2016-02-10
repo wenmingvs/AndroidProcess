@@ -81,7 +81,6 @@ public class OneFragment extends Fragment {
         checkBox3 = (CheckBox) mView.findViewById(R.id.checkbox3);
         checkBox4 = (CheckBox) mView.findViewById(R.id.checkbox4);
         checkBox5 = (CheckBox) mView.findViewById(R.id.checkbox5);
-        checkBox6 = (CheckBox) mView.findViewById(R.id.checkbox6);
         checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -174,7 +173,7 @@ public class OneFragment extends Fragment {
             }
         });
     }
-    
+
     private void deselectAll() {
         checkBox1.setChecked(false);
         checkBox2.setChecked(false);
