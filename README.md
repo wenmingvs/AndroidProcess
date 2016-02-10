@@ -113,7 +113,7 @@ AndroidSDK14在Application类里增加了ActivityLifecycleCallbacks，我们可�
 
 ![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/3.PNG)
 
-方法五：通过Android自带的无障碍功能，监控窗口焦点的变化，进而拿到当前焦点窗口对应的包名
+方法五：通过Android自带的无障碍功能
 ------
 
 非常感谢[@EffectiveMatrix](http://weibo.com/hatewx?refer_flag=1005050005_)大神带来的新的判断前后台的方法  
@@ -124,10 +124,10 @@ AndroidSDK14在Application类里增加了ActivityLifecycleCallbacks，我们可�
 
 ![enter image description here](http://ww3.sinaimg.cn/large/691cc151gw1f0uiy60md3j20fs07omzj.jpg)  
  
-**原理**
+**原理**  
 Android 辅助功能(AccessibilityService) 为我们提供了一系列的事件回调，帮助我们指示一些用户界面的状态变化。 我们可以派生辅助功能类，进而对不同的 AccessibilityEvent 进行处理。 同样的，这个服务就可以用来判断当前的前台应用
 
-**优势**
+**优势**  
 1. AccessibilityService 有非常广泛的 ROM 覆盖，特别是非国产手机，从 Android API Level 8(Android 2.2) 到 Android Api Level 23(Android 6.0)
 2.  AccessibilityService 不再需要轮询的判断当前的应用是不是在前台，系统会在窗口状态发生变化的时候主动回调，耗时和资源消耗都极小
 3. 不需要权限请求
