@@ -32,7 +32,7 @@ Boolean isForeground = BackgroundUtil.getLinuxCoreInfo(context, packageName);
 
 六种方法的区别
 -----
-|方法|判断原理|是否需要权限读取|是否可以判断其他应用位于前台|特点
+|方法|判断原理|需要权限|可以判断其他应用位于前台|特点
 | ------ | ------ | ------ | ------ | ------ |
 |方法一|RunningTask|否|Android4.0系列可以,5.0以上机器不行|5.0此方法被废弃
 |方法二|RunningProcess|否|当App存在后台常驻的Service时失效|无
