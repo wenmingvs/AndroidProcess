@@ -1,13 +1,10 @@
 # AndroidProcess
 
-提供一个判断App是否处于前台的工具类,拥有多达5种判断方法,最后一种方法堪称Android黑科技,既可以突破Android5.0以上的权限封锁,获取任意前台App的包名,又不需要权限.欢迎大家star我的新项目
+提供一个判断App是否处于前台的工具类,拥有多达6种判断方法,最后一种方法堪称Android黑科技,既可以突破Android5.0以上的权限封锁,获取任意前台App的包名,又不需要权限.欢迎大家star我的新项目
 
-AndroidProcess App, require Android 4.0+, GPL v3 License  
-![enter image description here](https://raw.githubusercontent.com/wenmingvs/NotifyUtil/master/sample/baiduYun.png)  
-![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/qrcode.png)  
 [Download Link ](http://pan.baidu.com/s/1pKl8ZJd)  
 
-五种判断方法展示
+六种判断方法展示
 -----
 ![enter image description here](http://ww3.sinaimg.cn/large/691cc151gw1f09mz3iz2cg20bc0h0b2d.gif)
 
@@ -17,7 +14,7 @@ AndroidProcess App, require Android 4.0+, GPL v3 License
 
 ``` java
 
-//五种方法任选其一
+//六种方法任选其一
 
 //使用方法一
 Boolean isForeground = BackgroundUtil.getRunningTask(context, packageName);
@@ -28,18 +25,21 @@ Boolean isForeground = BackgroundUtil.getApplicationValue(context);
 //使用方法四
 Boolean isForeground = BackgroundUtil.queryUsageStats(context, packageName);
 //使用方法五
+Boolean isForeground = BackgroundUtil.getFromAccessibilityService(context, packageName);
+//使用方法六
 Boolean isForeground = BackgroundUtil.getLinuxCoreInfo(context, packageName);
 ```
 
-五种方法的区别
+六种方法的区别
 -----
 |方法|判断原理|是否需要权限读取|是否可以判断其他应用位于前台|特点
 | ------ | ------ | ------ | ------ | ------ |
 |方法一|RunningTask|否|Android4.0系列可以,5.0以上机器不行|5.0此方法被废弃
 |方法二|RunningProcess|否|当App存在后台常驻的Service时失效|无
 |方法三|ActivityLifecycleCallbacks|否|否|简单有效,代码最少
-|方法四|UsageStatsManager|是|是|最符合Google规范的判断方法
-|方法五|读取/proc目录下的信息|否|是|当proc目录下文件夹过多时,此方法是耗时操作
+|方法四|UsageStatsManager|是|是|需要用户手动授权
+|方法五|通过Android无障碍功能实现|否|是|需要用户手动授权
+|方法六|读取/proc目录下的信息|否|是|当proc目录下文件夹过多时,过多的IO操作会引起耗时
 
 
 方法一：通过RunningTask
@@ -113,8 +113,32 @@ AndroidSDK14在Application类里增加了ActivityLifecycleCallbacks，我们可�
 
 ![enter image description here](https://raw.githubusercontent.com/wenmingvs/AndroidProcess/master/sample/3.PNG)
 
+方法五：通过Android自带的无障碍功能，监控窗口焦点的变化，进而拿到当前焦点窗口对应的包名
+------
 
-方法五：读取Linux系统内核保存在/proc目录下的process进程信息
+非常感谢[@EffectiveMatrix](http://weibo.com/hatewx?refer_flag=1005050005_)大神带来的新的判断前后台的方法  
+
+此方法属于他原创，具体的博文参照这里http://effmx.com/articles/tong-guo-android-fu-zhu-gong-neng-accessibility-service-jian-ce-ren-yi-qian-tai-jie-mian/  
+
+此方法无法直观的通过下拉通知视图来进行前后台的观察，请到LogCat中进行观察即可，以下是LogCat中打印的信息
+
+![enter image description here](http://ww3.sinaimg.cn/large/691cc151gw1f0ui5xcf7gj20ap0a0wgt.jpg)  
+ 
+**原理**
+Android 辅助功能(AccessibilityService) 为我们提供了一系列的事件回调，帮助我们指示一些用户界面的状态变化。 我们可以派生辅助功能类，进而对不同的 AccessibilityEvent 进行处理。 同样的，这个服务就可以用来判断当前的前台应用
+
+**优势**
+1. AccessibilityService 有非常广泛的 ROM 覆盖，特别是非国产手机，从 Android API Level 8(Android 2.2) 到 Android Api Level 23(Android 6.0)
+2.  AccessibilityService 不再需要轮询的判断当前的应用是不是在前台，系统会在窗口状态发生变化的时候主动回调，耗时和资源消耗都极小
+3. 不需要权限请求
+4. 它是一个稳定的方法，与 “方法6”读取 /proc 目录不同，它并非利用 Android 一些设计上的漏洞，可以长期使用的可能很大
+5. 可以用来判断任意应用甚至 Activity, PopupWindow, Dialog 对象是否处于前台
+
+**劣势** 
+1. 需要要用户开启辅助功能
+2. 辅助功能会伴随应用被“强行停止”而剥夺
+
+方法六：读取Linux系统内核保存在/proc目录下的process进程信息
 ----
 ![enter image description here](http://ww3.sinaimg.cn/mw690/691cc151gw1f09z6bjz9rg20bc0h0b29.gif)
 
@@ -170,7 +194,7 @@ Gradle 构建
 ------
 - 版本
 	- 最新 Android SDK
-	- Gradle
+	- 最新 Gradle
 - 环境变量
 	- ANDROID_HOME
 	- GRADLE_HOME，同时把bin放入path变量

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Library</string>
+    <string name="accessbiliityNo">请为App打开辅助功能开关！！</string>
 </resources>

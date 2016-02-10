@@ -12,6 +12,7 @@
     <string name="reminder3">方法3：\n通过ActivityLifecycleCallbacks来批量管理Activity的生命周期，进而实现判断，此方法在API 14以上均有效，\n\n\n注意：\n1. 请务必在Application中注册此回调接口</string>
     <string name="reminder4">方法4：\n通过使用UsageStatsManager获取，此方法是Android5.0之后提供的新API，可以获取一个时间段内的应用统计信息\n\n\n注意：\n1. 务必提供在AndroidManifest中加入对应的权限\n2. 打开手机设置，点击安全-高级，在有权查看使用情况的应用中，为这个App打上勾</string>
     <string name="reminder5">方法5：\nLinux系统内核会把Process进程信息保存在/proc目录下,通过遍历进程的属性信息来判断位于前台的任一应用</string>
+    <string name="reminder6">方法6：\n通过Android自带的无障碍功能，监控窗口焦点的变化，进而拿到当前焦点窗口对应的包名</string>
 
 
 </resources>

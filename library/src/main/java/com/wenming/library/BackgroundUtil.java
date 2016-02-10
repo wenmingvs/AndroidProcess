@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.wenming.library.processutil.AndroidAppProcess;
@@ -32,6 +33,7 @@ public class BackgroundUtil {
     public static final int BKGMETHOD_GETAPPLICATION_VALUE = 2;
     public static final int BKGMETHOD_GETUSAGESTATS = 3;
     public static final int BKGMETHOD_GETLINUXPROCESS = 4;
+    public static final int BKGMETHOD_GETACCESSIBILITYSERVICE = 5;
 
 
     /**
@@ -53,6 +55,8 @@ public class BackgroundUtil {
                 return queryUsageStats(context, packageName);
             case BKGMETHOD_GETLINUXPROCESS:
                 return getLinuxCoreInfo(context, packageName);
+            case BKGMETHOD_GETACCESSIBILITYSERVICE:
+                return getFromAccessibilityService(context, packageName);
             default:
                 return false;
         }
@@ -168,7 +172,32 @@ public class BackgroundUtil {
     }
 
     /**
-     * 方法5：无意中看到乌云上有人提的一个漏洞，Linux系统内核会把process进程信息保存在/proc目录下，Shell命令去获取的他，再根据进程的属性判断是否为前台
+     * 方法5：通过Android自带的无障碍功能，监控窗口焦点的变化，进而拿到当前焦点窗口对应的包名
+     * 必须：
+     * 1. 创建ACCESSIBILITY SERVICE INFO 属性文件
+     * 2. 注册 DETECTION SERVICE 到 ANDROIDMANIFEST.XML
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static boolean getFromAccessibilityService(Context context, String packageName) {
+        if (DetectService.isAccessibilitySettingsOn(context) == true) {
+            DetectService detectService = DetectService.getInstance();
+            String foreground = detectService.getForegroundPackage();
+            Log.d("wenming", "当前窗口焦点对应的包名为： =" + foreground);
+            return packageName.equals(foreground);
+        } else {
+            Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+            Toast.makeText(context, R.string.accessbiliityNo, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    /**
+     * 方法6：无意中看到乌云上有人提的一个漏洞，Linux系统内核会把process进程信息保存在/proc目录下，Shell命令去获取的他，再根据进程的属性判断是否为前台
      *
      * @param packageName 需要检查是否位于栈顶的App的包名
      */
@@ -181,8 +210,7 @@ public class BackgroundUtil {
             }
         }
         return false;
-
-
     }
+
 
 }

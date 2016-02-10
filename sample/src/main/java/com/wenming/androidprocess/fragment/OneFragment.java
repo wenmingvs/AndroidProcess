@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,12 +30,8 @@ public class OneFragment extends Fragment {
     private Context mContext;
     private View mView;
 
-    private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5;
+    private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5, checkBox6;
     private ArrayList<String> reminderlist;
-
-    public OneFragment(Context context) {
-        mContext = context;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,15 +42,24 @@ public class OneFragment extends Fragment {
         reminderlist.add(getResources().getString(R.string.reminder3));
         reminderlist.add(getResources().getString(R.string.reminder4));
         reminderlist.add(getResources().getString(R.string.reminder5));
+        reminderlist.add(getResources().getString(R.string.reminder6));
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_one, container, false);
         initCheckBox();
-        //initTextView();
         layoutClick();
         return mView;
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    public OneFragment(Context context) {
+        mContext = context;
     }
 
 
@@ -75,6 +81,7 @@ public class OneFragment extends Fragment {
         checkBox3 = (CheckBox) mView.findViewById(R.id.checkbox3);
         checkBox4 = (CheckBox) mView.findViewById(R.id.checkbox4);
         checkBox5 = (CheckBox) mView.findViewById(R.id.checkbox5);
+        checkBox6 = (CheckBox) mView.findViewById(R.id.checkbox6);
         checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -140,6 +147,17 @@ public class OneFragment extends Fragment {
                 }
             }
         });
+        checkBox6.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked == true) {
+                    startService();
+                    deselectAll();
+                    checkBox6.setChecked(true);
+                    Features.BGK_METHOD = BackgroundUtil.BKGMETHOD_GETACCESSIBILITYSERVICE;
+                }
+            }
+        });
 
 
     }
@@ -156,14 +174,14 @@ public class OneFragment extends Fragment {
             }
         });
     }
-
-
+    
     private void deselectAll() {
         checkBox1.setChecked(false);
         checkBox2.setChecked(false);
         checkBox3.setChecked(false);
         checkBox4.setChecked(false);
         checkBox5.setChecked(false);
+        checkBox6.setChecked(false);
     }
 
 }

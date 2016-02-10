@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.RelativeLayout;
 
 import com.wenming.andriodprocess.R;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
  */
 public class MyService extends Service {
 
-    private final float UPDATA_INTERVAL = 0.5f;//in seconds
+    private final float UPDATA_INTERVAL = 0.2f;//in seconds
     private String status;
     private Context mContext;
     private ArrayList<String> mContentList;
@@ -55,6 +56,7 @@ public class MyService extends Service {
         mContentList.add("通过ActivityLifecycleCallbacks判断");
         mContentList.add("通过UsageStatsManager判断");
         mContentList.add("通过LinuxCoreInfo判断");
+        mContentList.add("通过AccessibilityService判断");
 
     }
 
@@ -71,6 +73,10 @@ public class MyService extends Service {
                     .setContentTitle("App处于" + status)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent);
+
+            if(Features.BGK_METHOD == BackgroundUtil.BKGMETHOD_GETACCESSIBILITYSERVICE){
+                mBuilder.setContentTitle("请到LogCat中观察前后台变化");
+            }
             notification = mBuilder.build();
             startForeground(1, notification);
             manager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -80,6 +86,7 @@ public class MyService extends Service {
             Intent i = new Intent(mContext, MyReceiver.class);
             PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, i, 0);
             manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
+            Log.d("wenming","App处于" + status);
         } else {
             stopForeground(true);
         }
