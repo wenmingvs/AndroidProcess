@@ -128,15 +128,15 @@ AndroidSDK14在Application类里增加了ActivityLifecycleCallbacks，我们可�
 Android 辅助功能(AccessibilityService) 为我们提供了一系列的事件回调，帮助我们指示一些用户界面的状态变化。 我们可以派生辅助功能类，进而对不同的 AccessibilityEvent 进行处理。 同样的，这个服务就可以用来判断当前的前台应用
 
 **优势**  
-1. AccessibilityService 有非常广泛的 ROM 覆盖，特别是非国产手机，从 Android API Level 8(Android 2.2) 到 Android Api Level 23(Android 6.0)
-2.  AccessibilityService 不再需要轮询的判断当前的应用是不是在前台，系统会在窗口状态发生变化的时候主动回调，耗时和资源消耗都极小
-3. 不需要权限请求
-4. 它是一个稳定的方法，与 “方法6”读取 /proc 目录不同，它并非利用 Android 一些设计上的漏洞，可以长期使用的可能很大
-5. 可以用来判断任意应用甚至 Activity, PopupWindow, Dialog 对象是否处于前台
+1. AccessibilityService 有非常广泛的 ROM 覆盖，特别是非国产手机，从 Android API Level 8(Android 2.2) 到 Android Api Level 23(Android 6.0)  
+2.  AccessibilityService 不再需要轮询的判断当前的应用是不是在前台，系统会在窗口状态发生变化的时候主动回调，耗时和资源消耗都极小  
+3. 不需要权限请求  
+4. 它是一个稳定的方法，与 “方法6”读取 /proc 目录不同，它并非利用 Android 一些设计上的漏洞，可以长期使用的可能很大  
+5. 可以用来判断任意应用甚至 Activity, PopupWindow, Dialog 对象是否处于前台  
 
 **劣势** 
-1. 需要要用户开启辅助功能
-2. 辅助功能会伴随应用被“强行停止”而剥夺
+1. 需要要用户开启辅助功能  
+2. 辅助功能会伴随应用被“强行停止”而剥夺  
 
 方法六：读取Linux系统内核保存在/proc目录下的process进程信息
 ----
