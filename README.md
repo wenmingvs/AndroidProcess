@@ -1,6 +1,10 @@
 # AndroidProcess
 
-提供一个判断App是否处于前台的工具类,拥有多达6种判断方法,最后一种方法堪称Android黑科技,既可以突破Android5.0以上的权限封锁,获取任意前台App的包名,又不需要权限.欢迎大家star我的新项目
+提供6种方法来判断App处于前台还是后台，并且封装成工具类供大家使用
+
+最后一种方法堪称Android黑科技（非原创），既可以突破Android5.0以上的权限封锁，获取任意前台App的包名，又不需要权限，欢迎大家star我的新项目
+
+**2016.2.11 感谢[@EffectiveMatrix](http://weibo.com/hatewx?refer_flag=1005050005_)大神带来的新的判断前后台的方法  **
 
 [Download Link ](https://github.com/wenmingvs/AndroidProcess/blob/master/demo.apk)  
 
@@ -141,6 +145,8 @@ Android 辅助功能(AccessibilityService) 为我们提供了一系列的事件�
 方法六：读取Linux系统内核保存在/proc目录下的process进程信息
 ----
 ![enter image description here](http://ww3.sinaimg.cn/mw690/691cc151gw1f09z6bjz9rg20bc0h0b29.gif)
+
+此方法并非我原创，原作者是国外的大神，GitHub项目在这里，https://github.com/jaredrummler/AndroidProcesses，也一并加入到工程中，供大家做全面的参考选择
 
 **原理**  
 无意中看到乌云上有人提的一个漏洞，Linux系统内核会把process进程信息保存在/proc目录下，Shell命令去获取的他，再根据进程的属性判断是否为前台
