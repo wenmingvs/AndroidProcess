@@ -50,7 +50,7 @@ public class BackgroundUtil {
             case BKGMETHOD_GETRUNNING_PROCESS:
                 return getRunningAppProcesses(context, packageName);
             case BKGMETHOD_GETAPPLICATION_VALUE:
-                return getApplicationValue(context);
+                return getApplicationValue((MyApplication) ((Service) context).getApplication());
             case BKGMETHOD_GETUSAGESTATS:
                 return queryUsageStats(context, packageName);
             case BKGMETHOD_GETACCESSIBILITYSERVICE:
@@ -104,10 +104,12 @@ public class BackgroundUtil {
      * 1. 自定义Application并且注册ActivityLifecycleCallbacks接口
      * 2. AndroidManifest.xml中更改默认的Application为自定义
      * 3. 当Application因为内存不足而被Kill掉时，这个方法仍然能正常使用。虽然全局变量的值会因此丢失，但是再次进入App时候会重新统计一次的
+     * @param myApplication
+     * @return
      */
 
-    public static boolean getApplicationValue(Context context) {
-        return ((MyApplication) ((Service) context).getApplication()).getAppCount() > 0;
+    public static boolean getApplicationValue(MyApplication myApplication) {
+        return myApplication.getAppCount() > 0;
     }
 
     /**
