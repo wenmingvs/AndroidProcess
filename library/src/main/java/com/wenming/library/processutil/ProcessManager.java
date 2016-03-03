@@ -22,6 +22,10 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.util.Log;
+
+import com.wenming.library.processutil.models.AndroidAppProcess;
+import com.wenming.library.processutil.models.AndroidProcess;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,8 +40,53 @@ import java.util.List;
  */
 public class ProcessManager {
 
-    private ProcessManager() {
-        throw new AssertionError("no instances");
+    public static final String TAG = "AndroidProcesses";
+
+    private static boolean loggingEnabled;
+
+    /**
+     * Toggle whether debug logging is enabled.
+     *
+     * @param enabled {@code true} to enable logging. This should be only be used for debugging purposes.
+     * @see #isLoggingEnabled()
+     * @see #log(String, Object...)
+     * @see #log(Throwable, String, Object...)
+     */
+    public static void setLoggingEnabled(boolean enabled) {
+        loggingEnabled = enabled;
+    }
+
+    /**
+     * @return {@code true} if logging is enabled.
+     * @see #setLoggingEnabled(boolean)
+     */
+    public static boolean isLoggingEnabled() {
+        return loggingEnabled;
+    }
+
+    /**
+     * Send a log message if logging is enabled.
+     *
+     * @param message the message to log
+     * @param args    list of arguments to pass to the formatter
+     */
+    public static void log(String message, Object... args) {
+        if (loggingEnabled) {
+            Log.d(TAG, args.length == 0 ? message : String.format(message, args));
+        }
+    }
+
+    /**
+     * Send a log message if logging is enabled.
+     *
+     * @param error   An exception to log
+     * @param message the message to log
+     * @param args    list of arguments to pass to the formatter
+     */
+    public static void log(Throwable error, String message, Object... args) {
+        if (loggingEnabled) {
+            Log.d(TAG, args.length == 0 ? message : String.format(message, args), error);
+        }
     }
 
     /**
@@ -57,10 +106,9 @@ public class ProcessManager {
                 try {
                     processes.add(new AndroidProcess(pid));
                 } catch (IOException e) {
-                    // If you are running this from a third-party app, then system apps will not be
-                    // readable on Android 5.0+ if SELinux is enforcing. You will need root access or an
-                    // elevated SELinux context to read all files under /proc.
-                    // See: https://su.chainfire.eu/#selinux
+                    log(e, "Error reading from /proc/%d.", pid);
+                    // System apps will not be readable on Android 5.0+ if SELinux is enforcing.
+                    // You will need root access or an elevated SELinux context to read all files under /proc.
                 }
             }
         }
@@ -85,10 +133,9 @@ public class ProcessManager {
                     processes.add(new AndroidAppProcess(pid));
                 } catch (AndroidAppProcess.NotAndroidAppProcessException ignored) {
                 } catch (IOException e) {
-                    // If you are running this from a third-party app, then system apps will not be
-                    // readable on Android 5.0+ if SELinux is enforcing. You will need root access or an
-                    // elevated SELinux context to read all files under /proc.
-                    // See: https://su.chainfire.eu/#selinux
+                    log(e, "Error reading from /proc/%d.", pid);
+                    // System apps will not be readable on Android 5.0+ if SELinux is enforcing.
+                    // You will need root access or an elevated SELinux context to read all files under /proc.
                 }
             }
         }
@@ -115,27 +162,20 @@ public class ProcessManager {
                 }
                 try {
                     AndroidAppProcess process = new AndroidAppProcess(pid);
-                    if (!process.foreground) {
-                        // Ignore processes not in the foreground
-                        continue;
-                    } else if (process.uid >= 1000 && process.uid <= 9999) {
-                        // First app user starts at 10000. Ignore system processes.
-                        continue;
-                    } else if (process.name.contains(":")) {
-                        // Ignore processes that are not running in the default app process.
-                        continue;
-                    } else if (pm.getLaunchIntentForPackage(process.getPackageName()) == null) {
-                        // Ignore processes that the user cannot launch.
-                        // TODO: remove this block?
-                        continue;
+                    if (process.foreground
+                            // ignore system processes. First app user starts at 10000.
+                            && (process.uid < 1000 || process.uid > 9999)
+                            // ignore processes that are not running in the default app process.
+                            && !process.name.contains(":")
+                            // Ignore processes that the user cannot launch.
+                            && pm.getLaunchIntentForPackage(process.getPackageName()) != null) {
+                        processes.add(process);
                     }
-                    processes.add(process);
                 } catch (AndroidAppProcess.NotAndroidAppProcessException ignored) {
                 } catch (IOException e) {
-                    // If you are running this from a third-party app, then system apps will not be
-                    // readable on Android 5.0+ if SELinux is enforcing. You will need root access or an
-                    // elevated SELinux context to read all files under /proc.
-                    // See: https://su.chainfire.eu/#selinux
+                    log(e, "Error reading from /proc/%d.", pid);
+                    // System apps will not be readable on Android 5.0+ if SELinux is enforcing.
+                    // You will need root access or an elevated SELinux context to read all files under /proc.
                 }
             }
         }
@@ -169,6 +209,7 @@ public class ProcessManager {
      * etc. If you need more process information try using
      * {@link #getRunningAppProcesses()} or {@link android.app.usage.UsageStatsManager}</p>
      *
+     * @param ctx the application context
      * @return a list of RunningAppProcessInfo records, or null if there are no
      * running processes (it will not return an empty list).  This list ordering is not
      * specified.
@@ -178,9 +219,7 @@ public class ProcessManager {
             List<AndroidAppProcess> runningAppProcesses = ProcessManager.getRunningAppProcesses();
             List<RunningAppProcessInfo> appProcessInfos = new ArrayList<>();
             for (AndroidAppProcess process : runningAppProcesses) {
-                RunningAppProcessInfo info = new RunningAppProcessInfo(
-                        process.name, process.pid, null
-                );
+                RunningAppProcessInfo info = new RunningAppProcessInfo(process.name, process.pid, null);
                 info.uid = process.uid;
                 // TODO: Get more information about the process. pkgList, importance, lru, etc.
                 appProcessInfos.add(info);
@@ -191,109 +230,8 @@ public class ProcessManager {
         return am.getRunningAppProcesses();
     }
 
-    /**
-     * Get a list of running processes based on name, pid, ppid, or other conditions.
-     * <p/>
-     * <p>Example usage:</p>
-     * <p/>
-     * <pre>
-     *   // Get all processes that contain the name "google"
-     *   Filter filter = new ProcessManager.Filter().setName("google");
-     *   List&lt;AndroidProcess&gt; processes = filter.run();
-     * </pre>
-     */
-    @Deprecated
-    public static class Filter {
-
-        private String name;
-        private int pid = -1;
-        private int ppid = -1;
-        private boolean apps;
-
-        /**
-         * @param name The name of the process to filter
-         * @return This Filter object to allow for chaining of calls to set methods
-         */
-        @Deprecated
-        public Filter setName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        /**
-         * @param pid The process id to filter
-         * @return This Filter object to allow for chaining of calls to set methods
-         */
-        @Deprecated
-        public Filter setPid(int pid) {
-            this.pid = pid;
-            return this;
-        }
-
-        /**
-         * @param ppid The parent process id to filter
-         * @return This Filter object to allow for chaining of calls to set methods
-         */
-        @Deprecated
-        public Filter setPpid(int ppid) {
-            this.ppid = ppid;
-            return this;
-        }
-
-        /**
-         * @param apps {@code true} to only filter app processes
-         * @return This Filter object to allow for chaining of calls to set methods
-         */
-        @Deprecated
-        public Filter setApps(boolean apps) {
-            this.apps = apps;
-            return this;
-        }
-
-        /**
-         * @return a List of processes based on the filter options.
-         */
-        @Deprecated
-        public List<AndroidProcess> run() {
-            List<AndroidProcess> processes = new ArrayList<>();
-            File[] files = new File("/proc").listFiles();
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    int pid;
-                    try {
-                        pid = Integer.parseInt(file.getName());
-                    } catch (NumberFormatException e) {
-                        continue;
-                    }
-                    if (this.pid != -1 && pid != this.pid) {
-                        continue;
-                    }
-                    try {
-                        AndroidProcess process;
-                        if (this.apps) {
-                            process = new AndroidAppProcess(pid);
-                        } else {
-                            process = new AndroidProcess(pid);
-                        }
-                        if (this.name != null && !process.name.contains(this.name)) {
-                            continue;
-                        }
-                        if (this.ppid != -1 && process.stat().ppid() != this.ppid) {
-                            continue;
-                        }
-                        processes.add(process);
-                    } catch (IOException e) {
-                        // If you are running this from a third-party app, then system apps will not be
-                        // readable on Android 5.0+ if SELinux is enforcing. You will need root access or an
-                        // elevated SELinux context to read all files under /proc.
-                        // See: https://su.chainfire.eu/#selinux
-                    } catch (AndroidAppProcess.NotAndroidAppProcessException ignored) {
-                    }
-                }
-            }
-            return processes;
-        }
-
+    private ProcessManager() {
+        throw new AssertionError("no instances");
     }
 
     /**

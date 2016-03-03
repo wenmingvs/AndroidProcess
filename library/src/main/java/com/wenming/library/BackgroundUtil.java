@@ -17,8 +17,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.wenming.library.processutil.AndroidAppProcess;
 import com.wenming.library.processutil.ProcessManager;
+import com.wenming.library.processutil.models.AndroidAppProcess;
 
 import java.util.Collections;
 import java.util.Comparator;

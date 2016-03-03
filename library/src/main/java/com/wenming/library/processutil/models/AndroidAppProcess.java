@@ -15,43 +15,83 @@
  *
  */
 
-package com.wenming.library.processutil;
+package com.wenming.library.processutil.models;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Parcel;
 
+import com.wenming.library.processutil.ProcessManager;
+
+import java.io.File;
 import java.io.IOException;
 
 public class AndroidAppProcess extends AndroidProcess {
 
+    private static final boolean SYS_SUPPORTS_SCHEDGROUPS = new File("/dev/cpuctl/tasks").exists();
+
     /**
      * {@code true} if the process is in the foreground
      */
-    public boolean foreground;
+    public final boolean foreground;
 
     /**
      * The user id of this process.
      */
-    public int uid;
-
-    private final Cgroup cgroup;
+    public final int uid;
 
     public AndroidAppProcess(int pid) throws IOException, NotAndroidAppProcessException {
         super(pid);
-        cgroup = super.cgroup();
-        ControlGroup cpuacct = cgroup.getGroup("cpuacct");
-        ControlGroup cpu = cgroup.getGroup("cpu");
-        if (cpu == null || cpuacct == null || !cpuacct.group.contains("pid_")) {
-            throw new NotAndroidAppProcessException(pid);
+        final boolean foreground;
+        int uid;
+
+        if (SYS_SUPPORTS_SCHEDGROUPS) {
+            Cgroup cgroup = cgroup();
+            ControlGroup cpuacct = cgroup.getGroup("cpuacct");
+            ControlGroup cpu = cgroup.getGroup("cpu");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (cpu == null || cpuacct == null || !cpuacct.group.contains("pid_")) {
+                    throw new NotAndroidAppProcessException(pid);
+                }
+                foreground = !cpu.group.contains("bg_non_interactive");
+                try {
+                    uid = Integer.parseInt(cpuacct.group.split("/")[1].replace("uid_", ""));
+                } catch (Exception e) {
+                    uid = status().getUid();
+                }
+                ProcessManager.log("name=%s, pid=%d, uid=%d, foreground=%b, cpuacct=%s, cpu=%s",
+                        name, pid, uid, foreground, cpuacct.toString(), cpu.toString());
+            } else {
+                if (cpu == null || cpuacct == null || !cpu.group.contains("apps")) {
+                    throw new NotAndroidAppProcessException(pid);
+                }
+                foreground = !cpu.group.contains("bg_non_interactive");
+                try {
+                    uid = Integer.parseInt(cpuacct.group.substring(cpuacct.group.lastIndexOf("/") + 1));
+                } catch (Exception e) {
+                    uid = status().getUid();
+                }
+                ProcessManager.log("name=%s, pid=%d, uid=%d foreground=%b, cpuacct=%s, cpu=%s",
+                        name, pid, uid, foreground, cpuacct.toString(), cpu.toString());
+            }
+        } else {
+            // this is a really ugly way to check if the process is an application.
+            // we could possibly check the UID name (starts with "app_" or "u<USER_ID>_a")
+            if (name.startsWith("/") || !new File("/data/data", getPackageName()).exists()) {
+                throw new NotAndroidAppProcessException(pid);
+            }
+            Stat stat = stat();
+            Status status = status();
+            // https://github.com/android/platform_system_core/blob/jb-mr1-release/libcutils/sched_policy.c#L245-256
+            foreground = stat.policy() == 0; // SCHED_NORMAL
+            uid = status.getUid();
+            ProcessManager.log("name=%s, pid=%d, uid=%d foreground=%b", name, pid, uid, foreground);
         }
-        foreground = !cpu.group.contains("bg_non_interactive");
-        try {
-            uid = Integer.parseInt(cpuacct.group.split("/")[1].replace("uid_", ""));
-        } catch (Exception e) {
-            uid = status().getUid();
-        }
+
+        this.foreground = foreground;
+        this.uid = uid;
     }
 
     /**
@@ -84,21 +124,16 @@ public class AndroidAppProcess extends AndroidProcess {
     }
 
     @Override
-    public Cgroup cgroup() {
-        return cgroup;
-    }
-
-    @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeParcelable(cgroup, flags);
         dest.writeByte((byte) (foreground ? 0x01 : 0x00));
+        dest.writeInt(uid);
     }
 
     protected AndroidAppProcess(Parcel in) {
         super(in);
-        cgroup = in.readParcelable(Cgroup.class.getClassLoader());
         foreground = in.readByte() != 0x00;
+        uid = in.readInt();
     }
 
     public static final Creator<AndroidAppProcess> CREATOR = new Creator<AndroidAppProcess>() {
