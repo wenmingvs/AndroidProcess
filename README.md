@@ -4,7 +4,11 @@
 
 最后一种方法堪称Android黑科技（非原创），既可以突破Android5.0以上的权限封锁，获取任意前台App的包名，又不需要权限，此方法并非我原创，原作者是国外的大神，[GitHub项目在这里](https://github.com/jaredrummler/AndroidProcesses)，也一并加入到工程中，供大家做全面的参考选择
 
-[Download Link ](https://github.com/wenmingvs/AndroidProcess/blob/master/demo.apk)  
+
+快速下载体验
+-----
+
+[百度网盘](https://github.com/wenmingvs/AndroidProcess/blob/master/demo.apk)
 
 
 **2016.2.11更新------感谢[@EffectiveMatrix](http://weibo.com/hatewx?refer_flag=1005050005_)大神带来的新的判断前后台的方法**  
