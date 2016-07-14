@@ -7,8 +7,12 @@
 
 快速下载体验
 -----
-
 [百度网盘](https://github.com/wenmingvs/AndroidProcess/blob/master/demo.apk)
+
+预览图
+-----
+![enter image description here](http://ww2.sinaimg.cn/large/691cc151gw1f09z4gz35mg20bc0h01kx.gif)
+
 
 
 **2016.2.11更新------感谢[@EffectiveMatrix](http://weibo.com/hatewx?refer_flag=1005050005_)大神带来的新的判断前后台的方法**  
