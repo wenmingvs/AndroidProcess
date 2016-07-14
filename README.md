@@ -2,21 +2,12 @@
 
 提供6种方法来判断App处于前台还是后台，并且封装成工具类供大家使用
 
-最后一种方法堪称Android黑科技（非原创），既可以突破Android5.0以上的权限封锁，获取任意前台App的包名，又不需要权限，欢迎大家star我的新项目
+最后一种方法堪称Android黑科技（非原创），既可以突破Android5.0以上的权限封锁，获取任意前台App的包名，又不需要权限
 
 [Download Link ](https://github.com/wenmingvs/AndroidProcess/blob/master/demo.apk)  
 
 
-
 **2016.2.11更新------感谢[@EffectiveMatrix](http://weibo.com/hatewx?refer_flag=1005050005_)大神带来的新的判断前后台的方法**  
-
-   
-   
-   
-
-六种判断方法展示
------
-![enter image description here](http://ww2.sinaimg.cn/large/691cc151gw1f0ulojk9ohg20bc0h0b2f.gif)
 
 用法
 -----
