@@ -108,7 +108,7 @@ AndroidSDK14在Application类里增加了ActivityLifecycleCallbacks，我们可�
   1. 此方法只在android5.0以上有效 
   2. AndroidManifest中加入此权限 
 ```  java
-<uses-permission xmlns:tools="http://schemas.android.com/tools" android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
+<uses-permission  android:name="android.permission.PACKAGE_USAGE_STATS" />
 ```
   3. 打开手机设置，点击安全-高级，在有权查看使用情况的应用中，为这个App打上勾
 
