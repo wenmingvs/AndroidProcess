@@ -2,11 +2,13 @@ package com.wenming.androidprocess.service;
 
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
@@ -26,13 +28,16 @@ import java.util.ArrayList;
 public class MyService extends Service {
 
     private static final float UPDATA_INTERVAL = 0.5f;//in seconds
+    private String CHANNEL_ONE_ID = "com.primedu.cn";
+    private String CHANNEL_ONE_NAME = "Channel One";
+
     private String status;
     private Context mContext;
     private ArrayList<String> mContentList;
     private Notification notification;
     private AlarmManager manager;
     private PendingIntent pendingIntent;
-    private NotificationCompat.Builder mBuilder;
+    private Notification.Builder mBuilder;
     private Intent mIntent;
     private NotificationManager mNotificationManager;
     private static final int NOTICATION_ID = 0x1;
@@ -79,17 +84,32 @@ public class MyService extends Service {
     }
 
     private void startNotification() {
+
+        NotificationChannel notificationChannel = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            notificationChannel = new NotificationChannel(CHANNEL_ONE_ID,
+                    CHANNEL_ONE_NAME, NotificationManager.IMPORTANCE_HIGH);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setShowBadge(true);
+            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            manager.createNotificationChannel(notificationChannel);
+        }
+
         status = getAppStatus() ? "前台" : "后台";
         mIntent = new Intent(mContext, MainActivity.class);
         pendingIntent = PendingIntent.getActivity(mContext, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mBuilder = new NotificationCompat.Builder(mContext)
-                .setSmallIcon(R.drawable.largeicon)
-                .setContentText(mContentList.get(Features.BGK_METHOD))
+        mBuilder = new Notification.Builder(mContext,CHANNEL_ONE_ID)
+                .setTicker("Nature")
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("App处于" + status)
+                .setContentText(mContentList.get(Features.BGK_METHOD))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
         notification = mBuilder.build();
-        startForeground(NOTICATION_ID, notification);
+        notification.flags |= Notification.FLAG_NO_CLEAR;
+        startForeground(1, notification);
     }
 
     private void updateNotification() {
