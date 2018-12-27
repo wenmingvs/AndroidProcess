@@ -1,0 +1,90 @@
+# learngit
+git 学习
+git 命令  工作区与缓存区
+
+1、git init  / git log / git reflog 
+   git log --graph --pretty=oneline --abbrev-commit
+   
+2、提交内容 status / add 把文件修改添加到暂存区/ commit 把暂存区的所有内容提交到当前分支/    git commit -a -m"new day for git"
+
+3、管理分支 branch -a/ git branch branch-name / git checkout -b branch-name / git branch -d branch-name
+   git branch -d branch-name 如果删除的分支还没有被 merge 到其他分支，git branch -d 命令会失败
+   git branch -D branch-name 
+   合并分支 git merge -m "merge from master" master
+   
+4、逆转与恢复：git reset [--mixed | --soft | --hard] [<commit-ish>]
+    
+	命令的选项：
+    --mixed
+      仅是重置索引的位置，而不改变你的工作树中的任何东西（即，文件中的所有变化都会被保留，也不标记他们为待提交状态），并且提示什么内容还没有被更新了。这个是默认的选项。
+    --soft
+      既不触动索引的位置，也不改变工作树中的任何内容，我们只是要求这些内容成为一份好的内容（之后才成为真正的提交内容）。这个选项使你可以将已经提交的东西重新逆转至“已更新但未提交（Updated but not Check in）”的状态。就像已经执行过 git update-index 命令，但是还没有执行 git commit 命令一样。
+    --hard
+      将工作树中的内容和头索引都切换至指定的版本位置中，也就是说自 <commit-ish> 之后的所有的跟踪内容和工作树中的内容都会全部丢失。因此，这个选项要慎用，除非你已经非常确定你的确不想再看到那些东西了。
+	
+	git checkout -- readme.txt意思就是，把readme.txt文件在工作区的修改全部撤销，这里有两种情况：
+       一种是readme.txt自修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态；
+       一种是readme.txt已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。
+	总之，就是让这个文件回到最近一次git commit或git add时的状态。
+	
+	git reset HEAD <file>可以把暂存区的修改撤销掉（unstage），重新放回工作区：git reset命令既可以回退版本，也可以把暂存区的修改回退到工作区。
+	
+	
+	
+远程仓库
+
+关联：git remote add origin git@github.com:michaelliao/learngit.git
+git push -u origin master第一次推送master分支的所有内容；
+
+
+分支管理
+
+master分支是一条线，Git用master指向最新的提交，再用HEAD指向master，就能确定当前分支，以及当前分支的提交点
+当我们创建新的分支，例如dev时，Git新建了一个指针叫dev，指向master相同的提交，再把HEAD指向dev，就表示当前分支在dev上
+
+解决冲突
+
+分支各自都分别有新的提交，这种情况下，Git无法执行“快速合并”，只能试图把各自的修改合并起来，但这种合并就可能会有冲突
+合并分支时，如果可能，Git会用Fast forward模式，但这种模式下，删除分支后，会丢掉分支信息。
+如果要强制禁用Fast forward模式，Git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息。
+git merge --no-ff -m "merge with no-ff" dev
+
+
+
+Bug分支
+当前正在dev上进行的工作还没有提交,并不是你不想提交，而是工作只进行到一半，还没法提交，预计完成还需1天时间。但是，必须在两个小时内修复该bug，怎么办？
+Git还提供了一个stash功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作.
+
+git stash list
+作现场还在，Git把stash内容存在某个地方了，但是需要恢复一下，有两个办法：
+一是用git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
+另一种方式是用git stash pop，恢复的同时把stash内容也删了：
+git stash save / git stash list / git stash pop /git stash apply
+
+开分支有两种方式:
+一种是在远程开好分支,本地直接拉下来; git checkout -b feature-branch origin/feature-branch 
+一种是本地开好分支,推送到远程.  
+     git push origin feature-branch:feature-branch 
+     git branch --set-upstream-to=origin/dev dev
+	 
+
+git revert 命令意思是撤销某次提交。它会产生一个新的提交，虽然代码回退了，但是版本依然是向前的，所以，当你用revert回退之后，所有人pull之后，他们的代码也自动的回退了。 
+
+git rebase
+    1、分支合并，减少commit的次数
+       $ git rebase --abort 参数来终止rebase的行动
+    2、交互式rebase
+       git rebase -i HEAD~4
+       rebase 是会隐藏你真实的修改记录的，所以最后呈现出来的 git 历史并不能表现你的真实操作，这点要注意。
+
+git rebase 命令会把你的"mywork"分支里的每个提交(commit)取消掉，并且把它们临时 保存为补丁(patch)(这些补丁放到".git/rebase"目录中),然后把"mywork"分支更新 到最新的"origin"分支，最后把保存的这些补丁应用到"mywork"分支上。
+在rebase的过程中，也许会出现冲突(conflict). 在这种情况，Git会停止rebase并会让你去解决 冲突；在解决完冲突后，用"git-add"命令去更新这些内容的索引(index), 然后，你无需执行 git-commit,只要执行:
+$ git rebase --continue
+
+git push 失败原因可能是：
+   - 用 `git-commit` 的文件已经被其它人修改 先pull代码解决冲突再提交
+   - 用 `git-reset --hard` 删除了一个已经发布了的一个提交
+   - 用 `git-commit --amend` 去替换一个已经发布的提交
+   - 用 `git-rebase` 去rebase一个已经发布的提交.　
+
+
