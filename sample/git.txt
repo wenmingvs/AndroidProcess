@@ -90,3 +90,9 @@ git push 失败原因可能是：
 
 
 test rebase remote
+
+test rebase local
+
+test rebase local2
+
+test rebase local3
