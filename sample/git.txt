@@ -88,3 +88,5 @@ git push 失败原因可能是：
    - 用 `git-rebase` 去rebase一个已经发布的提交.　
 
 
+
+test rebase remote
