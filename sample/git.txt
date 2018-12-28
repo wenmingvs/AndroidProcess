@@ -98,3 +98,5 @@ test rebase local2
 test rebase local3
 
 test rebase local5
+
+test rebase local7
