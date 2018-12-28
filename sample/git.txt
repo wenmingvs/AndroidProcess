@@ -50,7 +50,6 @@ master分支是一条线，Git用master指向最新的提交，再用HEAD指向m
 git merge --no-ff -m "merge with no-ff" dev
 
 
-
 Bug分支
 当前正在dev上进行的工作还没有提交,并不是你不想提交，而是工作只进行到一半，还没法提交，预计完成还需1天时间。但是，必须在两个小时内修复该bug，怎么办？
 Git还提供了一个stash功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作.
@@ -96,3 +95,5 @@ test rebase local
 test rebase local2
 
 test rebase local3
+
+test rebase local4
